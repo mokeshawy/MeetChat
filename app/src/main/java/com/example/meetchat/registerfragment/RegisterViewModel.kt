@@ -7,7 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.example.meetchat.R
+import com.example.meetchat.util.Constants
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class RegisterViewModel : ViewModel(){
 
@@ -16,6 +19,10 @@ class RegisterViewModel : ViewModel(){
     var etEnterPassword         = MutableLiveData<String>("")
     var etEnterConfirmPassword  = MutableLiveData<String>("")
 
+    // operation work for firebase
+    var firebaseAuth        = FirebaseAuth.getInstance()
+    var firebaseDatabase    = FirebaseDatabase.getInstance()
+    var userReference       = firebaseDatabase.getReference(Constants.USER_REFERENCE)
 
     // fun create new account
     fun registerAccount( context : Context , view : View){
@@ -35,7 +42,36 @@ class RegisterViewModel : ViewModel(){
             Snackbar.make(view , context.resources.getString(R.string.err_msg_password_and_confirm_password_not_mismatch), Snackbar.LENGTH_SHORT).show()
         }else{
 
+            firebaseAuth.createUserWithEmailAndPassword( etEnterEmail.value!! , etEnterPassword.value!!)
+                .addOnCompleteListener {
+                    if(it.isSuccessful){
+                        firebaseAuth.currentUser?.sendEmailVerification()
+                        var uid = firebaseAuth.currentUser?.uid
 
+                        // make insert data for user to realtime database use HashMap
+                        var map = HashMap<String , Any>()
+
+                        map[Constants.USER_ID]          = uid.toString()
+                        map[Constants.USER_NAME]        = etEnterName.value!!
+                        map[Constants.USER_PROFILE]     = Constants.DEFAULT_IMAGE_PROFILE
+                        map[Constants.USER_COVER]       = Constants.DEFAULT_COVER_IMAGE
+                        map[Constants.USER_STATUS]      = "offline"
+                        map[Constants.USER_SEARCH]      = "search"
+                        map[Constants.USER_FACEBOOK]    = Constants.DEFAULT_FACEBOOK_URL
+                        map[Constants.USER_INSTAGRAM]   = Constants.DEFAULT_INSTA_URL
+                        map[Constants.USER_WEBSITE]     = Constants.DEFAULT_WEB_URL
+
+                        userReference.child(uid.toString()).setValue(map).addOnCompleteListener { setValue ->
+                            if(setValue.isSuccessful){
+                                Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment)
+                            }else{
+                                Snackbar.make(view , setValue.exception!!.message.toString(), Snackbar.LENGTH_SHORT).show()
+                            }
+                        }
+                    }else{
+                        Snackbar.make(view , it.exception!!.message.toString(), Snackbar.LENGTH_SHORT).show()
+                    }
+            }
         }
     }
 
@@ -46,7 +82,6 @@ class RegisterViewModel : ViewModel(){
             Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment)
         }
     }
-
 
     // back to login page by toolbar icon back
     fun backToLoginPage(view: View, toolbar: androidx.appcompat.widget.Toolbar){

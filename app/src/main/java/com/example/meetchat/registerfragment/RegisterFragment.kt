@@ -16,6 +16,7 @@ class RegisterFragment : Fragment() {
 
     lateinit var binding : FragmentRegisterBinding
     private val registerViewModel : RegisterViewModel by viewModels()
+
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = FragmentRegisterBinding.inflate(inflater)
@@ -29,6 +30,12 @@ class RegisterFragment : Fragment() {
         binding.lifecycleOwner  = this
         binding.registerVarMdel = registerViewModel
 
+
+       //click button for create new account
+        binding.btnRegister.setOnClickListener {
+            // call function register new account
+            registerViewModel.registerAccount( requireActivity() , view)
+        }
 
         // call function go login page
         registerViewModel.goLoginPage(view , binding.tvLogin)

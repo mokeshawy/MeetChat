@@ -85,7 +85,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/enter_name"
-                        android:inputType="text"/>
+                        android:inputType="text"
+                        android:text="@={registerVarMdel.etEnterName}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,7 +106,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/enter_email"
-                        android:inputType="textEmailAddress"/>
+                        android:inputType="textEmailAddress"
+                        android:text="@={registerVarMdel.etEnterEmail}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -125,7 +127,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/enter_password"
-                        android:inputType="textPassword"/>
+                        android:inputType="textPassword"
+                        android:text="@={registerVarMdel.etEnterPassword}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -145,7 +148,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/enter_confirm_password"
-                        android:inputType="textPassword"/>
+                        android:inputType="textPassword"
+                        android:text="@={registerVarMdel.etEnterConfirmPassword}"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -162,7 +166,7 @@
                     app:layout_constraintVertical_bias="0.112">
 
                     <Button
-                        android:id="@+id/btn_sign_up"
+                        android:id="@+id/btn_register"
                         android:layout_width="@dimen/btn_register_page_width"
                         android:layout_height="@dimen/btn_register_page_height"
                         android:text="@string/btn_register"
