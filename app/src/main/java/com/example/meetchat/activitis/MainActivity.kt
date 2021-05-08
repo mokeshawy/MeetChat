@@ -1,4 +1,4 @@
-package com.example.meetchat
+package com.example.meetchat.activitis
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.meetchat.R
 import com.example.meetchat.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
