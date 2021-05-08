@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1086860200180",
+    "project_id": "meetchat-8e945",
+    "storage_bucket": "meetchat-8e945.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1086860200180:android:6c0f640051e1591ae6f6a1",
+        "android_client_info": {
+          "package_name": "com.example.meetchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1086860200180-b3t5kt1524u6peq8gloj00d22h8kv7pv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlwuWiIXOunbKsd-wuFEGxPtrXLEdsr-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1086860200180-b3t5kt1524u6peq8gloj00d22h8kv7pv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
