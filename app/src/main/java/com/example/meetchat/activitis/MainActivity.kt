@@ -26,6 +26,17 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController , appBarConfiguration)
 
 
+        //hide action bar for fragment
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when(destination.id){
 
+                R.id.splashFragment         -> supportActionBar!!.hide()
+                R.id.viewPagerFragment      -> supportActionBar!!.hide()
+                R.id.registerFragment       -> supportActionBar!!.hide()
+                R.id.loginFragment          -> supportActionBar!!.hide()
+                R.id.forgetPasswordFragment -> supportActionBar!!.hide()
+                else -> supportActionBar!!.show()
+            }
+        }
     }
 }
