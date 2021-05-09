@@ -27,6 +27,12 @@ object Constants {
     const val DEFAULT_WEB_URL       = "https://www.google.com"
 
 
+    //Serializable Key
+    const val SERIALIZABLE_USERS = "Users"
+
+
+
+
     // fun get id for user login
     fun getCurrentUser() : String{
         var firebaseAuth = FirebaseAuth.getInstance().currentUser

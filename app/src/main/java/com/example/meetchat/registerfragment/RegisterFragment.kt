@@ -37,8 +37,11 @@ class RegisterFragment : Fragment() {
             registerViewModel.registerAccount( requireActivity() , view)
         }
 
-        // call function go login page
-        registerViewModel.goLoginPage(view , binding.tvLogin)
+        binding.tvLogin.setOnClickListener {
+            // call function go login page
+            registerViewModel.goLoginPage(view)
+        }
+
 
         // call function for back to login by icon back toolbar
         registerViewModel.backToLoginPage(view , binding.toolBarRegister)

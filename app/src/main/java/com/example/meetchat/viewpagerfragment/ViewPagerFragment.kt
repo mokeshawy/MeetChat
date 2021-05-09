@@ -1,27 +1,19 @@
 package com.example.meetchat.viewpagerfragment
 
-import android.app.PendingIntent.getActivity
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.example.meetchat.R
-import com.example.meetchat.adapter.ViewPagerAdapter
-import com.example.meetchat.chatsfragment.ChatsFragment
 import com.example.meetchat.databinding.FragmentViewPagerBinding
-import com.example.meetchat.searchfragment.SearchFragment
-import com.example.meetchat.settingsfragment.SettingsFragment
-import com.google.android.material.internal.ContextUtils.getActivity
-import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.auth.FirebaseAuth
+import com.example.meetchat.model.UsersModel
+import com.example.meetchat.util.Constants
+import com.squareup.picasso.Picasso
 
 class ViewPagerFragment : Fragment() {
 
     lateinit var binding : FragmentViewPagerBinding
     private val viewPagerViewModel : ViewPagerViewModel by viewModels()
+
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         // Inflate the layout for this fragment
         binding = FragmentViewPagerBinding.inflate(inflater)
@@ -32,6 +24,11 @@ class ViewPagerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        // Show data for profile user login
+        var user = arguments?.getSerializable(Constants.SERIALIZABLE_USERS) as UsersModel
+        Picasso.get().load(user.profile).into(binding.ivProfileImage)
+        binding.tvUserName.text = user.username
+
 
         // connect with view model for viewPager
         binding.lifecycleOwner      = this
@@ -39,14 +36,16 @@ class ViewPagerFragment : Fragment() {
 
 
         // operation viewPager with tabLayout.
-        viewPagerViewModel.viewPagerWork(binding.viewPager,
+        viewPagerViewModel.viewPagerWork(
+            binding.viewPager,
             binding.tabLayout,
             requireActivity().supportFragmentManager,
             lifecycle)
 
 
         // Call function for operation set on menu item
-        viewPagerViewModel.setOnMenuItem( requireActivity(),
+        viewPagerViewModel.setOnMenuItem(
+            requireActivity(),
             view,
             binding.toolBarViewPager)
     }

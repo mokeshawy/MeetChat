@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.example.meetchat.R
 import com.example.meetchat.databinding.FragmentLoginBinding
+import com.example.meetchat.util.Constants
 
 class LoginFragment : Fragment() {
 
@@ -29,15 +31,21 @@ class LoginFragment : Fragment() {
         binding.loginVarModel   = loginViewModel
 
 
+
         // button for login
         binding.btnLogIn.setOnClickListener {
             loginViewModel.login(requireActivity() , view)
         }
 
-        // call function for go register page
-        loginViewModel.goRegisterPage(view , binding.tvRegisterNewAccount)
+        binding.tvRegisterNewAccount.setOnClickListener {
+            // call function for go register page
+            loginViewModel.goRegisterPage(view )
+        }
 
-        // call function for go to forget password page
-        loginViewModel.goForgetPasswordPage(view , binding.tvForgetPassword)
+        binding.tvForgetPassword.setOnClickListener {
+            // call function for go to forget password page
+            loginViewModel.goForgetPasswordPage(view)
+        }
+
     }
 }

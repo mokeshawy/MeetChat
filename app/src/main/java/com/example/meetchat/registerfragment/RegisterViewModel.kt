@@ -21,7 +21,7 @@ class RegisterViewModel : ViewModel(){
     var etEnterPassword         = MutableLiveData<String>("")
     var etEnterConfirmPassword  = MutableLiveData<String>("")
 
-    // operation work for firebase
+    // Firebase instance
     var firebaseAuth        = FirebaseAuth.getInstance()
     var firebaseDatabase    = FirebaseDatabase.getInstance()
     var userReference       = firebaseDatabase.getReference(Constants.USER_REFERENCE)
@@ -79,15 +79,13 @@ class RegisterViewModel : ViewModel(){
 
 
     // fun got log in page
-    fun goLoginPage( view: View , tv_login : TextView){
-        tv_login.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment)
-        }
+    fun goLoginPage( view: View){
+        Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment)
     }
 
     // back to login page by toolbar icon back
     fun backToLoginPage(view: View, toolbar: androidx.appcompat.widget.Toolbar){
-        // set icon on action bar for back to login fragment
+        // set icon on action bar for back to login page
         toolbar.setNavigationIcon(R.drawable.ic_vector_arrow_back)
         toolbar.setNavigationOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment)
