@@ -29,8 +29,10 @@ class LoginFragment : Fragment() {
         binding.loginVarModel   = loginViewModel
 
 
-
-
+        // button for login
+        binding.btnLogIn.setOnClickListener {
+            loginViewModel.login(requireActivity() , view)
+        }
 
         // call function for go register page
         loginViewModel.goRegisterPage(view , binding.tvRegisterNewAccount)

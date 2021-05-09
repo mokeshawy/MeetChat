@@ -92,6 +92,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/enter_email"
                         android:inputType="textEmailAddress"
+                        android:text="@={loginVarModel.etEnterEmail}"
                         android:textColor="@color/colorSecondaryText" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -113,6 +114,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/enter_password"
                         android:inputType="textPassword"
+                        android:text="@={loginVarModel.etEnterPassword}"
                         android:textColor="@color/colorSecondaryText" />
 
                 </com.google.android.material.textfield.TextInputLayout>

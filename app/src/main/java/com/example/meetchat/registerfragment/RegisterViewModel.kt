@@ -11,6 +11,8 @@ import com.example.meetchat.util.Constants
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import java.util.*
+import kotlin.collections.HashMap
 
 class RegisterViewModel : ViewModel(){
 
@@ -56,7 +58,7 @@ class RegisterViewModel : ViewModel(){
                         map[Constants.USER_PROFILE]     = Constants.DEFAULT_IMAGE_PROFILE
                         map[Constants.USER_COVER]       = Constants.DEFAULT_COVER_IMAGE
                         map[Constants.USER_STATUS]      = "offline"
-                        map[Constants.USER_SEARCH]      = "search"
+                        map[Constants.USER_SEARCH]      = etEnterName.value!!.lowercase(Locale.getDefault())
                         map[Constants.USER_FACEBOOK]    = Constants.DEFAULT_FACEBOOK_URL
                         map[Constants.USER_INSTAGRAM]   = Constants.DEFAULT_INSTA_URL
                         map[Constants.USER_WEBSITE]     = Constants.DEFAULT_WEB_URL

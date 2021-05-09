@@ -8,11 +8,14 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.example.meetchat.R
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginViewModel : ViewModel() {
 
     var etEnterEmail    = MutableLiveData<String>("")
     var etEnterPassword = MutableLiveData<String>("")
+
+    var firebaseAuth = FirebaseAuth.getInstance()
 
     // fun log in
     fun login( context: Context , view : View){
@@ -25,7 +28,18 @@ class LoginViewModel : ViewModel() {
         }else if( etEnterPassword.value!!.length < 6){
             Snackbar.make(view,context.resources.getString(R.string.err_msg_the_password_is_not_less_than),Snackbar.LENGTH_SHORT).show()
         }else{
-
+            firebaseAuth.signInWithEmailAndPassword( etEnterEmail.value!! , etEnterPassword.value!!).addOnCompleteListener {
+                if(it.isSuccessful){
+                    if(firebaseAuth.currentUser?.isEmailVerified!!){
+                        Snackbar.make(view ,context.resources.getString(R.string.msg_welcome_user_login), Snackbar.LENGTH_SHORT).show()
+                        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_viewPagerFragment)
+                    }else{
+                        Snackbar.make(view ,context.resources.getString(R.string.err_msg_confirm_email), Snackbar.LENGTH_SHORT).show()
+                    }
+                }else{
+                    Snackbar.make(view , it.exception!!.message.toString(), Snackbar.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
