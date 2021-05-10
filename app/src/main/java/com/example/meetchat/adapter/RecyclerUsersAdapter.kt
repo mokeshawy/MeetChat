@@ -33,7 +33,7 @@ class RecyclerUsersAdapter(private var mUsers: ArrayList<UsersModel> ,
         // contents of the view with that element
 
         viewHolder.binding.tvUserName.text = mUsers[position].username
-        //Picasso.get().load(mUsers[position].profile).into(viewHolder.binding.ivProfileImage)
+        Picasso.get().load(mUsers[position].profile).into(viewHolder.binding.ivProfileImage)
 
 
 //        viewHolder.initialize( viewHolder , dataSet[position] , onClickAdapter)
