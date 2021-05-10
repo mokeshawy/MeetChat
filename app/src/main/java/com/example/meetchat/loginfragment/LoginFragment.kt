@@ -35,6 +35,7 @@ class LoginFragment : Fragment() {
         // button for login
         binding.btnLogIn.setOnClickListener {
             loginViewModel.login(requireActivity() , view)
+
         }
 
         binding.tvRegisterNewAccount.setOnClickListener {

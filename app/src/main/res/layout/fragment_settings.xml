@@ -87,7 +87,7 @@
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="2dp"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="60dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_vector_facebook"/>
 
@@ -96,7 +96,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="60dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_vector_instagram"/>
 
@@ -112,15 +112,26 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/btn_save_change"
+                android:id="@+id/btn_save_cover"
                 android:layout_width="@dimen/btn_register_page_width"
                 android:layout_height="@dimen/btn_register_page_height"
-                android:text="Save"
+                android:text="Save Cover Image"
                 android:visibility="gone"
                 android:background="@drawable/button_background"
                 android:layout_marginTop="50dp"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/ll_setting"/>
+
+            <Button
+                android:id="@+id/btn_save_profile"
+                android:layout_width="@dimen/btn_register_page_width"
+                android:layout_height="@dimen/btn_register_page_height"
+                android:text="Save Profile Image"
+                android:visibility="gone"
+                android:background="@drawable/button_background"
+                android:layout_marginTop="7dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/btn_save_cover"/>
 
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

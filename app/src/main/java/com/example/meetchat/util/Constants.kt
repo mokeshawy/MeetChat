@@ -1,5 +1,9 @@
 package com.example.meetchat.util
 
+import android.app.Dialog
+import android.content.Context
+import android.widget.TextView
+import com.example.meetchat.R
 import com.google.firebase.auth.FirebaseAuth
 
 object Constants {
@@ -42,5 +46,30 @@ object Constants {
             currentUser = firebaseAuth.uid
         }
         return currentUser
+    }
+
+
+    lateinit var mProgressDialog : Dialog
+
+    fun showProgressDialog( text : String ,context: Context){
+
+        mProgressDialog = Dialog(context)
+
+        /* Set the screen content from a layout resource
+        The resource will be inflated , adding all top-level views to the screen */
+        mProgressDialog.setContentView(R.layout.dialog_progress)
+        var dialog = mProgressDialog.findViewById(R.id.tv_progress_textId) as TextView
+        dialog.text = text
+
+        mProgressDialog.setCancelable(false)
+        mProgressDialog.setCanceledOnTouchOutside(false)
+
+        mProgressDialog.show()
+
+    }
+
+    // hide progress bar
+    fun hideProgressDialog(){
+        mProgressDialog.dismiss()
     }
 }

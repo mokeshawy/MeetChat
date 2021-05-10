@@ -41,6 +41,7 @@ class LoginViewModel : ViewModel() {
         }else if( etEnterPassword.value!!.length < 6){
             Snackbar.make(view,context.resources.getString(R.string.err_msg_the_password_is_not_less_than),Snackbar.LENGTH_SHORT).show()
         }else{
+            Constants.showProgressDialog(context.resources.getString(R.string.please_wait) ,context)
             firebaseAuth.signInWithEmailAndPassword( etEnterEmail.value!! , etEnterPassword.value!!).addOnCompleteListener {
                 if(it.isSuccessful){
                     if(firebaseAuth.currentUser?.isEmailVerified!!){
@@ -57,6 +58,7 @@ class LoginViewModel : ViewModel() {
                                         bundle.putSerializable(Constants.SERIALIZABLE_USERS , user)
                                         try{
                                             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_viewPagerFragment , bundle)
+                                            Constants.hideProgressDialog()
                                         }catch(e:Exception){
 
                                         }
@@ -65,6 +67,7 @@ class LoginViewModel : ViewModel() {
                                 }
                                 override fun onCancelled(error: DatabaseError) {
                                     Toast.makeText( context , error.message , Toast.LENGTH_SHORT).show()
+                                    Constants.hideProgressDialog()
                                 }
 
                             })
@@ -72,9 +75,11 @@ class LoginViewModel : ViewModel() {
                         }
                     }else{
                         Snackbar.make(view ,context.resources.getString(R.string.err_msg_confirm_email), Snackbar.LENGTH_SHORT).show()
+                        Constants.hideProgressDialog()
                     }
                 }else{
                     Snackbar.make(view , it.exception!!.message.toString(), Snackbar.LENGTH_SHORT).show()
+                    Constants.hideProgressDialog()
                 }
             }
         }

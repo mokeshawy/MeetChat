@@ -44,9 +44,15 @@ class SettingsFragment : Fragment() {
             pickProfileImage()
         }
 
-        // btn for save change
-        binding.btnSaveChange.setOnClickListener {
-            settingsViewModel.uploadImageToDatabase(imageUri)
+
+        // btn for save cover image
+        binding.btnSaveCover.setOnClickListener {
+            settingsViewModel.uploadCoverImageToDatabase(requireActivity(),imageUri)
+        }
+
+        // btn for save profile image
+        binding.btnSaveProfile.setOnClickListener {
+            settingsViewModel.uploadProfileImageToDatabase(requireActivity(),imageUri)
         }
         
     }
@@ -73,13 +79,13 @@ class SettingsFragment : Fragment() {
         if(requestCode == Constants.PICK_COVER_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data?.data!! !=null){
             imageUri = data?.data!!
             binding.ivCoverSettings.setImageURI(imageUri)
-            binding.btnSaveChange.visibility = View.VISIBLE
+            binding.btnSaveCover.visibility = View.VISIBLE
         }
         // Request from select profile image
         if(requestCode ==  Constants.PICK_PROFILE_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data?.data!! !=null){
             imageUri = data?.data!!
             binding.ivProfileSettings.setImageURI(imageUri)
-            binding.btnSaveChange.visibility = View.VISIBLE
+            binding.btnSaveProfile.visibility = View.VISIBLE
         }
     }
 

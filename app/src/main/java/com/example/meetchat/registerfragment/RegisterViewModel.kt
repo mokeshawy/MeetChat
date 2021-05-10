@@ -43,7 +43,7 @@ class RegisterViewModel : ViewModel(){
         }else if(etEnterPassword.value!! != etEnterConfirmPassword.value!!){
             Snackbar.make(view , context.resources.getString(R.string.err_msg_password_and_confirm_password_not_mismatch), Snackbar.LENGTH_SHORT).show()
         }else{
-
+            Constants.showProgressDialog(context.resources.getString(R.string.please_wait) ,context)
             firebaseAuth.createUserWithEmailAndPassword( etEnterEmail.value!! , etEnterPassword.value!!)
                 .addOnCompleteListener {
                     if(it.isSuccessful){
@@ -66,12 +66,15 @@ class RegisterViewModel : ViewModel(){
                         userReference.child(uid.toString()).setValue(map).addOnCompleteListener { setValue ->
                             if(setValue.isSuccessful){
                                 Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment)
+                                Constants.hideProgressDialog()
                             }else{
                                 Snackbar.make(view , setValue.exception!!.message.toString(), Snackbar.LENGTH_SHORT).show()
+                                Constants.hideProgressDialog()
                             }
                         }
                     }else{
                         Snackbar.make(view , it.exception!!.message.toString(), Snackbar.LENGTH_SHORT).show()
+                        Constants.hideProgressDialog()
                     }
             }
         }
