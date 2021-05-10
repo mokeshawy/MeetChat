@@ -20,8 +20,8 @@ object Constants {
 
 
     // default image for profile and cover
-    const val DEFAULT_IMAGE_PROFILE = "https://firebasestorage.googleapis.com/v0/b/meetchat-8e945.appspot.com/o/Photo%2Fic_profile_image.png?alt=media&token=513cd23f-963a-4054-ac43-3ab424e67d7b"
-    const val DEFAULT_COVER_IMAGE   = "https://firebasestorage.googleapis.com/v0/b/meetchat-8e945.appspot.com/o/Photo%2Fcover_for_profile_user.jpg?alt=media&token=bc29d58d-2f7a-40cb-ad2f-0164cf983ee4"
+    const val DEFAULT_IMAGE_PROFILE = "https://firebasestorage.googleapis.com/v0/b/meetchat-8e945.appspot.com/o/Photo%2Fic_profile_image.png?alt=media&token=185f6fea-8e6e-4e34-93a5-af33b9792f64"
+    const val DEFAULT_COVER_IMAGE   = "https://firebasestorage.googleapis.com/v0/b/meetchat-8e945.appspot.com/o/Photo%2Fdefualt_cover_profile.png?alt=media&token=4a90b9c5-53a8-4073-982a-01f508a3e62a"
     const val DEFAULT_FACEBOOK_URL  = "https://www.facebook.com/"
     const val DEFAULT_INSTA_URL     = "https://www.instagram.com/"
     const val DEFAULT_WEB_URL       = "https://www.google.com"
@@ -30,8 +30,9 @@ object Constants {
     //Serializable Key
     const val SERIALIZABLE_USERS = "Users"
 
-
-
+    // pic image key
+    const val PICK_COVER_IMAGE_REQUEST = 10
+    const val PICK_PROFILE_IMAGE_REQUEST = 11
 
     // fun get id for user login
     fun getCurrentUser() : String{

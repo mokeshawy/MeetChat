@@ -55,7 +55,12 @@ class LoginViewModel : ViewModel() {
 
                                         var bundle = Bundle()
                                         bundle.putSerializable(Constants.SERIALIZABLE_USERS , user)
-                                        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_viewPagerFragment , bundle)
+                                        try{
+                                            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_viewPagerFragment , bundle)
+                                        }catch(e:Exception){
+
+                                        }
+
                                     }
                                 }
                                 override fun onCancelled(error: DatabaseError) {
