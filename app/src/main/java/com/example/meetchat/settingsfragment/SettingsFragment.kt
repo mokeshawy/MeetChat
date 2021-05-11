@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import com.example.meetchat.R
 import com.example.meetchat.databinding.FragmentSettingsBinding
@@ -18,7 +19,8 @@ class SettingsFragment : Fragment() {
 
     lateinit var binding            : FragmentSettingsBinding
     private val settingsViewModel   : SettingsViewModel by viewModels()
-    lateinit var imageUri           : Uri
+    lateinit var coverUri           : Uri
+    lateinit var profileUri         : Uri
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
 
@@ -34,6 +36,11 @@ class SettingsFragment : Fragment() {
         binding.lifecycleOwner      = this
         binding.settingsVarModel    = settingsViewModel
 
+        // Default uri for image cover and profile.
+        coverUri    = Constants.DEFAULT_COVER_IMAGE.toUri()
+        profileUri  = Constants.DEFAULT_IMAGE_PROFILE.toUri()
+
+
         // Select cover image
         binding.ivCoverSettings.setOnClickListener {
             pickCoverImage()
@@ -44,17 +51,18 @@ class SettingsFragment : Fragment() {
             pickProfileImage()
         }
 
+        // btn for save change
+        binding.btnSaveChange.setOnClickListener {
+            // Show progress dialog when click button save change after select image cover or profile.
+            Constants.showProgressDialog(resources.getString(R.string.please_wait) ,requireActivity())
+            // Call function select cover image.
+            settingsViewModel.uploadCoverImageToDatabase(requireActivity() , coverUri)
+            // Call function select profile image.
+            settingsViewModel.uploadProfileImageToDatabase(requireActivity() , profileUri)
 
-        // btn for save cover image
-        binding.btnSaveCover.setOnClickListener {
-            settingsViewModel.uploadCoverImageToDatabase(requireActivity(),imageUri)
         }
 
-        // btn for save profile image
-        binding.btnSaveProfile.setOnClickListener {
-            settingsViewModel.uploadProfileImageToDatabase(requireActivity(),imageUri)
-        }
-        
+
     }
 
     //function select cover image
@@ -76,16 +84,16 @@ class SettingsFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         // Request from select cover image
-        if(requestCode == Constants.PICK_COVER_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data?.data!! !=null){
-            imageUri = data?.data!!
-            binding.ivCoverSettings.setImageURI(imageUri)
-            binding.btnSaveCover.visibility = View.VISIBLE
+        if(requestCode == Constants.PICK_COVER_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK ){
+            coverUri = data?.data!!
+            binding.ivCoverSettings.setImageURI(coverUri)
+            binding.btnSaveChange.visibility = View.VISIBLE
         }
         // Request from select profile image
-        if(requestCode ==  Constants.PICK_PROFILE_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data?.data!! !=null){
-            imageUri = data?.data!!
-            binding.ivProfileSettings.setImageURI(imageUri)
-            binding.btnSaveProfile.visibility = View.VISIBLE
+        if(requestCode ==  Constants.PICK_PROFILE_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK ){
+            profileUri = data?.data!!
+            binding.ivProfileSettings.setImageURI(profileUri)
+            binding.btnSaveChange.visibility = View.VISIBLE
         }
     }
 

@@ -41,4 +41,7 @@
     <!-- Progress bar -->
     <string name="please_wait">Please wait&#8230;</string>
 
+    <!-- register page -->
+    <string name="err_no_select_image">You did not choose any image</string>
+
 </resources>
