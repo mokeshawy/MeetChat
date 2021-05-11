@@ -38,6 +38,10 @@ object Constants {
     const val PICK_COVER_IMAGE_REQUEST = 10
     const val PICK_PROFILE_IMAGE_REQUEST = 11
 
+    // hint for alert dialog
+    const val HINT_WEB_SITE = "e.g www.google.com"
+    const val HINT_SOCIAL_NAME = "e.g MohamedKeshawy"
+
     // fun get id for user login
     fun getCurrentUser() : String{
         var firebaseAuth = FirebaseAuth.getInstance().currentUser

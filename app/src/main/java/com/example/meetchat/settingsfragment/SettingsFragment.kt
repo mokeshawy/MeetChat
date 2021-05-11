@@ -1,6 +1,7 @@
 package com.example.meetchat.settingsfragment
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,12 +9,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import com.example.meetchat.R
 import com.example.meetchat.databinding.FragmentSettingsBinding
 import com.example.meetchat.model.UsersModel
 import com.example.meetchat.util.Constants
+import java.util.jar.Manifest
 
 class SettingsFragment : Fragment() {
 
@@ -21,6 +25,7 @@ class SettingsFragment : Fragment() {
     private val settingsViewModel   : SettingsViewModel by viewModels()
     lateinit var coverUri           : Uri
     lateinit var profileUri         : Uri
+             var socialChecker      : String = ""
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
 
@@ -53,32 +58,63 @@ class SettingsFragment : Fragment() {
 
         // btn for save change
         binding.btnSaveChange.setOnClickListener {
+
             // Show progress dialog when click button save change after select image cover or profile.
             Constants.showProgressDialog(resources.getString(R.string.please_wait) ,requireActivity())
             // Call function select cover image.
-            settingsViewModel.uploadCoverImageToDatabase(requireActivity() , coverUri)
+            settingsViewModel.uploadCoverImageToDatabase( coverUri, binding.btnSaveChange)
+
             // Call function select profile image.
-            settingsViewModel.uploadProfileImageToDatabase(requireActivity() , profileUri)
+            settingsViewModel.uploadProfileImageToDatabase( profileUri, binding.btnSaveChange)
 
         }
 
+        //Call function for get details data from database and show in setting view.
+        settingsViewModel.getUserDetails(requireActivity(),
+            binding.tvUsernameSettings ,
+            binding.ivProfileSettings ,
+            binding.ivCoverSettings)
+
+        // Set facebook Url
+        binding.setFacebook.setOnClickListener {
+            socialChecker = Constants.USER_FACEBOOK
+            settingsViewModel.setSocialLink( requireActivity() , socialChecker)
+        }
+        // Set instagram Url
+        binding.setInstagram.setOnClickListener {
+            socialChecker = Constants.USER_INSTAGRAM
+            settingsViewModel.setSocialLink( requireActivity() , socialChecker)
+        }
+        // Set website Url
+        binding.setWebsite.setOnClickListener {
+            socialChecker = Constants.USER_WEBSITE
+            settingsViewModel.setSocialLink( requireActivity() , socialChecker)
+        }
 
     }
 
     //function select cover image
     private fun pickCoverImage(){
-        var intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult( intent,Constants.PICK_COVER_IMAGE_REQUEST )
-
-
+        // Permission
+        if(ContextCompat.checkSelfPermission(requireActivity() , android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(requireActivity() , arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE) , 1)
+        }else{
+            var intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult( intent,Constants.PICK_COVER_IMAGE_REQUEST )
+        }
     }
+
     //function select profile image
     private fun pickProfileImage(){
-        var intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent , Constants.PICK_PROFILE_IMAGE_REQUEST)
-
+        // Permission
+        if(ContextCompat.checkSelfPermission(requireActivity() , android.Manifest.permission.READ_EXTERNAL_STORAGE) !=PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(requireActivity() , arrayOf( android.Manifest.permission.READ_EXTERNAL_STORAGE) , 2)
+        }else{
+            var intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent , Constants.PICK_PROFILE_IMAGE_REQUEST)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -96,5 +132,4 @@ class SettingsFragment : Fragment() {
             binding.btnSaveChange.visibility = View.VISIBLE
         }
     }
-
 }
