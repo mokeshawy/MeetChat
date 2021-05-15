@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.registerFragment       -> supportActionBar!!.hide()
                 R.id.loginFragment          -> supportActionBar!!.hide()
                 R.id.forgetPasswordFragment -> supportActionBar!!.hide()
+                R.id.messageChatFragment    -> supportActionBar!!.hide()
                 else -> supportActionBar!!.show()
             }
         }

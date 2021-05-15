@@ -1,33 +1,29 @@
 package com.example.meetchat.searchfragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.fragment.findNavController
 import com.example.meetchat.R
+import com.example.meetchat.`interface`.OnClickUsersAdapter
 import com.example.meetchat.adapter.RecyclerUsersAdapter
 import com.example.meetchat.databinding.FragmentSearchBinding
 import com.example.meetchat.model.UsersModel
 import com.example.meetchat.util.Constants
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.example.meetchat.viewpagerfragment.ViewPagerFragment
 import java.util.*
-import kotlin.collections.ArrayList
 
 class SearchFragment : Fragment() {
 
     lateinit var binding        : FragmentSearchBinding
     private val searchViewModel : SearchViewModel by viewModels()
-
+    lateinit var viewPagerFragment : ViewPagerFragment
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle? ): View? {
         // Inflate the layout for this fragment
         binding = FragmentSearchBinding.inflate(inflater)
@@ -42,11 +38,13 @@ class SearchFragment : Fragment() {
         binding.searchVarModel = searchViewModel
 
 
+        viewPagerFragment = ViewPagerFragment()
+
         // Call function for retrieveAllUsers
-        searchViewModel.retrieveAllUsers(requireActivity() , binding.etSearchUsers)
+        searchViewModel.retrieveAllUsers(requireActivity())
         searchViewModel.mUsersAdapterLiveData.observe(viewLifecycleOwner , androidx.lifecycle.Observer {
             binding.rvSearchList.setHasFixedSize(true)
-            binding.rvSearchList.adapter = RecyclerUsersAdapter(it,requireActivity(),false)
+            binding.rvSearchList.adapter = RecyclerUsersAdapter(it  ,requireActivity() , viewPagerFragment)
         })
 
         // EditText for search
@@ -58,7 +56,7 @@ class SearchFragment : Fragment() {
                searchViewModel.searchForUser(requireActivity(),s.toString().lowercase(Locale.getDefault()))
                 searchViewModel.mUsersAdapterLiveData.observe(viewLifecycleOwner , androidx.lifecycle.Observer {
                     binding.rvSearchList.setHasFixedSize(true)
-                    binding.rvSearchList.adapter = RecyclerUsersAdapter(it,requireActivity(),false)
+                    binding.rvSearchList.adapter = RecyclerUsersAdapter(it , requireActivity(), viewPagerFragment)
                 })
             }
             override fun afterTextChanged(s: Editable?) {
@@ -66,3 +64,27 @@ class SearchFragment : Fragment() {
         })
     }
 }
+
+
+
+//// set click listener on item view
+//viewHolder.itemView.setOnClickListener {
+//    val options = arrayOf<CharSequence>(
+//        "Send Message",
+//        "Visit Profile"
+//    )
+//    val builder = AlertDialog.Builder(requireActivity())
+//    builder.setTitle("What do you want?")
+//    builder.setItems(options){dialog,position->
+//        if( position == 0){
+//            var bundle = Bundle()
+//            bundle.putSerializable(Constants.VISIT_ID , dataSet)
+//            findNavController().navigate(R.id.action_viewPagerFragment_to_messageChatFragment , bundle)
+//        }
+//        if( position == 1){
+//
+//        }
+//    }
+//    builder.setNegativeButton("cancel",null)
+//    builder.create().show()
+//}

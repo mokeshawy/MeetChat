@@ -12,21 +12,19 @@ import com.google.firebase.database.*
 
 class SearchViewModel : ViewModel() {
 
-
+    var etSearchUser = MutableLiveData<String>("")
     var mUsersAdapterLiveData   = MutableLiveData<ArrayList<UsersModel>>()
     private var mUsers          = ArrayList<UsersModel>()
-
-
 
     var userReference   = FirebaseDatabase.getInstance().getReference(Constants.USER_REFERENCE)
     var queryUsers      = FirebaseDatabase.getInstance().getReference(Constants.USER_REFERENCE)
 
     // function retrieve all users
-     fun retrieveAllUsers( context: Context , et_search_users : EditText){
+     fun retrieveAllUsers( context: Context ){
         userReference.addValueEventListener( object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 mUsers!!.clear()
-                if(et_search_users.toString() == ""){
+                if(etSearchUser.value!! == ""){
                     for (ds in snapshot.children){
 
                         var users = ds.getValue(UsersModel::class.java)!!

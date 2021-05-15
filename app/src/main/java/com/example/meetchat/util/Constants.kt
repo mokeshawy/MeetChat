@@ -24,7 +24,7 @@ object Constants {
 
 
     // default image for profile and cover
-    const val DEFAULT_IMAGE_PROFILE = "https://firebasestorage.googleapis.com/v0/b/meetchat-8e945.appspot.com/o/Photo%2Fic_profile_image.png?alt=media&token=185f6fea-8e6e-4e34-93a5-af33b9792f64"
+    const val DEFAULT_IMAGE_PROFILE = "https://firebasestorage.googleapis.com/v0/b/meetchat-8e945.appspot.com/o/Photo%2Fic_profile_image.png?alt=media&token=8abff52c-5b67-4e88-b1fb-2812ce7b24b0"
     const val DEFAULT_COVER_IMAGE   = "https://firebasestorage.googleapis.com/v0/b/meetchat-8e945.appspot.com/o/Photo%2Fdefualt_cover_profile.png?alt=media&token=4a90b9c5-53a8-4073-982a-01f508a3e62a"
     const val DEFAULT_FACEBOOK_URL  = "https://www.facebook.com/"
     const val DEFAULT_INSTA_URL     = "https://www.instagram.com/"
@@ -35,12 +35,35 @@ object Constants {
     const val SERIALIZABLE_USERS = "Users"
 
     // pic image key
-    const val PICK_COVER_IMAGE_REQUEST = 10
-    const val PICK_PROFILE_IMAGE_REQUEST = 11
+    const val PICK_COVER_IMAGE_REQUEST      = 10
+    const val PICK_PROFILE_IMAGE_REQUEST    = 11
+    const val PICK_ATTACH_IMAGE_REQUEST     = 11
 
     // hint for alert dialog
     const val HINT_WEB_SITE = "e.g www.google.com"
     const val HINT_SOCIAL_NAME = "e.g MohamedKeshawy"
+
+
+    // Reference for Chats in real time database
+    const val CHATS_REFERENCE = "Chats"
+
+    // Child Chats reference in real time database
+    const val CHATS_SENDER = "sender"
+    const val CHATS_MESSAGE = "message"
+    const val CHATS_RECEIVER = "receiver"
+    const val CHATS_IS_SEEN = "isSeen"
+    const val CHATS_URL = "url"
+    const val CHATS_MESSAGE_ID = "messageId"
+
+    // Users Adapter const key
+    const val VISIT_ID = "visit_id"
+
+    // ChatList Reference
+    const val CHAT_LIST_REFERENCE = "ChatList"
+    const val SENT_YOU_IMAGE = "sent you an image."
+
+    // Child ChatList reference
+    const val CHAT_LIST_ID = "id"
 
     // fun get id for user login
     fun getCurrentUser() : String{

@@ -1,21 +1,26 @@
 package com.example.meetchat.adapter
-
+import android.app.AlertDialog
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.meetchat.R
+import com.example.meetchat.`interface`.OnClickUsersAdapter
 import com.example.meetchat.databinding.UserSearchItemBinding
 import com.example.meetchat.model.UsersModel
+import com.example.meetchat.util.Constants
+import com.example.meetchat.viewpagerfragment.ViewPagerFragment
 import com.squareup.picasso.Picasso
 
-class RecyclerUsersAdapter(private var mUsers: ArrayList<UsersModel> ,
-                           var mContext : Context ,
-                           var isChecked : Boolean) : RecyclerView.Adapter<RecyclerUsersAdapter.ViewHolder>() {
+class RecyclerUsersAdapter(private var mUsers: ArrayList<UsersModel> , var context: Context , var viewPagerFragment: ViewPagerFragment ) : RecyclerView.Adapter<RecyclerUsersAdapter.ViewHolder>() {
 
     class ViewHolder(var binding : UserSearchItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-//        fun initialize(viewHolder: ViewHolder , dataSet: UsersModel , action : OnClickAdapter){
-//            action.onClickUsersAdapter(viewHolder , dataSet , adapterPosition)
+        // initialize onClickUsersAdapter from interface
+//        fun initialize(viewHolder: ViewHolder, dataSet: UsersModel, action : OnClickUsersAdapter, isChecked : Boolean){
+//            action.onClickUsersAdapter(viewHolder , dataSet , adapterPosition , isChecked)
 //        }
 
     }
@@ -35,8 +40,32 @@ class RecyclerUsersAdapter(private var mUsers: ArrayList<UsersModel> ,
         viewHolder.binding.tvUserName.text = mUsers[position].username
         Picasso.get().load(mUsers[position].profile).into(viewHolder.binding.ivProfileImage)
 
+        //viewHolder.initialize( viewHolder , mUsers[position] , onClickAdapter , false)
 
-//        viewHolder.initialize( viewHolder , dataSet[position] , onClickAdapter)
+        viewHolder.itemView.setOnClickListener {
+
+            // set click listener on item view
+            viewHolder.itemView.setOnClickListener {
+                val options = arrayOf<CharSequence>(
+                    "Send Message",
+                    "Visit Profile"
+                )
+                val builder = AlertDialog.Builder(context)
+                builder.setTitle("What do you want?")
+                builder.setItems(options){dialog,position->
+                    if( position == 0){
+                        var bundle = Bundle()
+                        bundle.putSerializable(Constants.VISIT_ID , mUsers)
+                        viewPagerFragment.findNavController().navigate(R.id.action_viewPagerFragment_to_messageChatFragment , bundle)
+                    }
+                    if( position == 1){
+
+                    }
+                }
+                builder.setNegativeButton("cancel",null)
+                builder.create().show()
+            }
+        }
     }
 
 

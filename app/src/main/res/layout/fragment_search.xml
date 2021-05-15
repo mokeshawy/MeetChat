@@ -26,7 +26,7 @@
                 android:id="@+id/et_search_users"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:text="@={searchVarModel.etSearchUser}"
                 android:layout_margin="6dp"
                 android:hint="Search users here..."/>
 

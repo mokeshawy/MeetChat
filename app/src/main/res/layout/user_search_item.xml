@@ -7,14 +7,15 @@
     </data>
 
     <RelativeLayout
+        android:id="@+id/rel_chats_fragment_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile_image"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/ic_profile_image"/>
 
         <TextView
@@ -22,9 +23,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="user name"
+            android:textSize="15sp"
             android:layout_centerInParent="true"
             android:layout_marginLeft="12dp"
-            android:textSize="19sp"
             android:layout_toRightOf="@+id/iv_profile_image" />
 
 
@@ -69,6 +70,20 @@
             android:textColor="@color/colorSecondaryText"
             android:layout_toRightOf="@+id/iv_profile_image"
             android:layout_below="@+id/tv_user_name" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="5dp"
+            android:layout_below="@+id/tv_last_message">
+
+            <View
+                android:layout_width="310dp"
+                android:layout_height="0.5dp"
+                android:layout_gravity="right"
+                android:background="@color/colorSecondaryText" />
+        </LinearLayout>
 
     </RelativeLayout>
 </layout>

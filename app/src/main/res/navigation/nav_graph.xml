@@ -26,6 +26,11 @@
             app:destination="@id/loginFragment"
             app:enterAnim="@android:anim/fade_in"
             app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/action_viewPagerFragment_to_messageChatFragment"
+            app:destination="@id/messageChatFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popUpTo="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatsFragment"
@@ -82,4 +87,9 @@
             app:enterAnim="@android:anim/fade_in"
             app:popUpTo="@id/nav_graph" />
     </fragment>
+    <fragment
+        android:id="@+id/messageChatFragment"
+        android:name="com.example.meetchat.messagecahtfragment.MessageChatFragment"
+        android:label="fragment_message_chat"
+        tools:layout="@layout/fragment_message_chat" />
 </navigation>
