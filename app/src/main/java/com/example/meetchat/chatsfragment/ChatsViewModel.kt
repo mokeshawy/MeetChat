@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.example.meetchat.model.ChatListModel
-import com.example.meetchat.model.ChatModel
 import com.example.meetchat.model.UsersModel
 import com.example.meetchat.util.Constants
 import com.google.firebase.database.DataSnapshot
@@ -34,9 +33,7 @@ class ChatsViewModel : ViewModel() {
     fun getChatList(context: Context , recycler_view_chatList : RecyclerView , tv_no_message : TextView){
         mChatListArray = ArrayList()
 
-
-        chatListReference.child(Constants.getCurrentUser())
-            .addValueEventListener( object : ValueEventListener{
+        chatListReference.child(Constants.getCurrentUser()).addValueEventListener( object : ValueEventListener{
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 mChatListArray.clear()
@@ -46,6 +43,7 @@ class ChatsViewModel : ViewModel() {
 
                     mChatListArray.add(chatList)
                 }
+                //call retrieveChat function
                 retrieveChatList(context , recycler_view_chatList , tv_no_message)
             }
             override fun onCancelled(error: DatabaseError) {
@@ -54,8 +52,7 @@ class ChatsViewModel : ViewModel() {
         })
     }
 
-
-
+    // retrieveChatList from users reference get id equal id from chatList reference
     fun retrieveChatList( context: Context , recycler_view_chatList : RecyclerView , tv_no_message : TextView){
         mUsersArray = ArrayList()
         usersReference.addValueEventListener( object : ValueEventListener{
@@ -67,12 +64,16 @@ class ChatsViewModel : ViewModel() {
                     val user = ds.getValue(UsersModel::class.java)!!
 
                     for (chatList in mChatListArray){
-                        if( user.uid == chatList.id){
+
+                        if(user.uid == chatList.id){
+
+                            Log.e("User ${chatList.id}","Done")
                             mUsersArray.add(user)
                         }
                     }
+                    mUsersLiveData.value = mUsersArray
                 }
-                mUsersLiveData.value = mUsersArray
+
                 if(mUsersArray.size > 0){
                     recycler_view_chatList.visibility   = View.VISIBLE
                     tv_no_message.visibility            = View.GONE

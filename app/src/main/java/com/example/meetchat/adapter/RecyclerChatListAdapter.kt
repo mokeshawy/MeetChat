@@ -2,18 +2,19 @@ package com.example.meetchat.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.meetchat.`interface`.OnClickChatListAdapter
 import com.example.meetchat.`interface`.OnClickUsersAdapter
 import com.example.meetchat.databinding.UserSearchItemBinding
 import com.example.meetchat.model.UsersModel
 import com.squareup.picasso.Picasso
 
-class RecyclerUsersAdapter(private var mUsers: ArrayList<UsersModel> ,var onClickAdapter: OnClickUsersAdapter ) : RecyclerView.Adapter<RecyclerUsersAdapter.ViewHolder>() {
+class RecyclerChatListAdapter(private var mUsers: ArrayList<UsersModel> , var onClickChatListAdapter: OnClickChatListAdapter ) : RecyclerView.Adapter<RecyclerChatListAdapter.ViewHolder>() {
 
     class ViewHolder(var binding : UserSearchItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         // initialize onClickUsersAdapter from interface
-        fun initialize(viewHolder: ViewHolder, dataSet: UsersModel, action : OnClickUsersAdapter, isChecked : Boolean){
-            action.onClickUsersAdapter(viewHolder , dataSet , adapterPosition , isChecked)
+        fun initialize(viewHolder: ViewHolder , dataSet: UsersModel, action : OnClickChatListAdapter, isChecked : Boolean){
+            action.onClickChatListAdapter(viewHolder , dataSet , adapterPosition , isChecked)
         }
 
     }
@@ -33,7 +34,7 @@ class RecyclerUsersAdapter(private var mUsers: ArrayList<UsersModel> ,var onClic
         viewHolder.binding.tvUserName.text = mUsers[position].username
         Picasso.get().load(mUsers[position].profile).into(viewHolder.binding.ivProfileImage)
 
-        viewHolder.initialize( viewHolder , mUsers[position] , onClickAdapter , false)
+        viewHolder.initialize( viewHolder , mUsers[position] , onClickChatListAdapter , false)
 
     }
 

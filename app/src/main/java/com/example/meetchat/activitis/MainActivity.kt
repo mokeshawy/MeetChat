@@ -18,8 +18,8 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this , R.layout.activity_main)
 
         // operation work for navigation component for fragment
-        val navHostFragment : NavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController : NavController = navHostFragment.navController
+        val navHostFragment : NavHostFragment   = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController   : NavController     = navHostFragment.navController
 
         // set up action bar for fragment
         val appBarConfiguration = AppBarConfiguration(setOf())
@@ -35,7 +35,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.registerFragment       -> supportActionBar!!.hide()
                 R.id.loginFragment          -> supportActionBar!!.hide()
                 R.id.forgetPasswordFragment -> supportActionBar!!.hide()
+                R.id.searchFragment         -> supportActionBar!!.hide()
+                R.id.chatsFragment          -> supportActionBar!!.hide()
                 R.id.messageChatFragment    -> supportActionBar!!.hide()
+
                 else -> supportActionBar!!.show()
             }
         }

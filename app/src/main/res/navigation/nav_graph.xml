@@ -91,5 +91,9 @@
         android:id="@+id/messageChatFragment"
         android:name="com.example.meetchat.messagecahtfragment.MessageChatFragment"
         android:label="fragment_message_chat"
-        tools:layout="@layout/fragment_message_chat" />
+        tools:layout="@layout/fragment_message_chat" >
+        <action
+            android:id="@+id/action_messageChatFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
 </navigation>

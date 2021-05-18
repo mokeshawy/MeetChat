@@ -13,13 +13,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.example.meetchat.R
 import com.example.meetchat.`interface`.OnClickChatAdapter
 import com.example.meetchat.adapter.RecyclerChatAdapter
 import com.example.meetchat.databinding.FragmentMessageChatBinding
 import com.example.meetchat.model.ChatModel
 import com.example.meetchat.model.UsersModel
 import com.example.meetchat.util.Constants
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
@@ -32,6 +34,7 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
     lateinit var userVisit              : UsersModel
     lateinit var firebaseStorage        : StorageReference
     lateinit var firebaseDatabase       : FirebaseDatabase
+    var reference                       : DatabaseReference? = null
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         // Inflate the layout for this fragment
         binding = FragmentMessageChatBinding.inflate(inflater)
@@ -45,7 +48,6 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
         binding.lifecycleOwner      = this
         binding.messageChatVarModel = messageChatViewModel
 
-
         // firebase instance
         firebaseDatabase    = FirebaseDatabase.getInstance()
         firebaseStorage     =  FirebaseStorage.getInstance().reference
@@ -53,9 +55,6 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
         // receive arguments from users adapter for information user
          userVisit = arguments?.getSerializable(Constants.VISIT_ID) as UsersModel
 
-        // Show details for user Visit in tool bar
-        Picasso.get().load(userVisit.profile).into(binding.ivProfileImageChat)
-        binding.tvUserNameChat.text = userVisit.username
 
         binding.ivSendMessageBtn.setOnClickListener {
             // fun send message
@@ -73,11 +72,30 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
             }
         }
 
-        // call function retrieve message
-        messageChatViewModel.retrieveMessage(Constants.getCurrentUser() , userVisit.uid)
+        reference = firebaseDatabase.getReference(Constants.USER_REFERENCE)
+        reference!!.orderByChild(Constants.USER_ID).equalTo(userVisit.uid).addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                for( ds in snapshot.children){
+                    var user = ds.getValue(UsersModel::class.java)!!
+
+                    // Show details for user Visit in tool bar
+                    Picasso.get().load(user.profile).into(binding.ivProfileImageChat)
+                    binding.tvUserNameChat.text = user.username
+                }
+                // call function retrieve message
+                messageChatViewModel.retrieveMessage(Constants.getCurrentUser() , userVisit.uid)
+            }
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
         messageChatViewModel.mChatArrayListLive.observe(viewLifecycleOwner, Observer {
             binding.recyclerViewChats.adapter = RecyclerChatAdapter(it ,userVisit.profile,this)
         })
+
+        //call seen message function
+        seenMessage(userVisit.uid)
     }
 
 
@@ -116,6 +134,7 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
         }
     }
 
+
     // Onclick interface from chat adapter
     override fun onClickMessageItem( viewHolder: RecyclerChatAdapter.ViewHolder,
                                      mChatList: ArrayList<ChatModel> ,
@@ -128,8 +147,8 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
             // image message - right side
             if( dataSet.sender == Constants.getCurrentUser()){
 
-                viewHolder.showTextMessage.visibility = View.GONE
-                viewHolder.rightImageView!!.visibility = View.VISIBLE
+                viewHolder.showTextMessage.visibility   = View.GONE
+                viewHolder.rightImageView!!.visibility  = View.VISIBLE
                 Picasso.get().load(dataSet.url).into(viewHolder.rightImageView)
 
             }else if(dataSet.sender != Constants.getCurrentUser()){ //=> image message - left side
@@ -146,7 +165,7 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
 
         // sent and seen message..
         if(position == mChatList.size -1){  // Seen.
-            if(dataSet.isSeen){
+            if(mChatList[position].isSeen ){
                 viewHolder.textSeen.text = "Seen"
                 if(dataSet.message == "sent you an image." && dataSet.url != "" ){
 
@@ -166,5 +185,37 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
         }else{
             viewHolder.textSeen.visibility = View.GONE
         }
+    }
+
+    // variable for seen message
+    var seenListener             : ValueEventListener? = null
+
+    // seen message function.
+    fun seenMessage( userId : String){
+        var chatsReference   = firebaseDatabase.getReference(Constants.CHATS_REFERENCE)
+        seenListener = chatsReference.addValueEventListener( object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for ( ds in snapshot.children){
+
+                    val chat = ds.getValue(ChatModel::class.java)!!
+
+                    if( chat.receiver == Constants.getCurrentUser() && chat.sender == userId){
+                        var map = HashMap<String , Any>()
+
+                        map[Constants.CHATS_IS_SEEN] = true
+
+                        ds.ref.updateChildren(map)
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        reference!!.removeEventListener(seenListener!!)
     }
 }

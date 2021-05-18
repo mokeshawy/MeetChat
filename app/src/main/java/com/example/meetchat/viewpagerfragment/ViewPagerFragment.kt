@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
+import com.example.meetchat.R
 import com.example.meetchat.databinding.FragmentViewPagerBinding
 import com.example.meetchat.model.UsersModel
+import com.example.meetchat.searchfragment.SearchFragment
 import com.example.meetchat.util.Constants
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 
 class ViewPagerFragment : Fragment() {
@@ -43,10 +47,19 @@ class ViewPagerFragment : Fragment() {
             lifecycle)
 
 
-        // Call function for operation set on menu item
-        viewPagerViewModel.setOnMenuItem(
-            requireActivity(),
-            view,
-            binding.toolBarViewPager)
+        // set menu with toolbar
+        binding.toolBarViewPager.inflateMenu(R.menu.menu_view_pager)
+        //Handling click events on menu
+        binding.toolBarViewPager.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_setting -> {
+                    FirebaseAuth.getInstance().signOut()
+                    Navigation.findNavController(view).navigate(R.id.action_viewPagerFragment_to_loginFragment)
+                    true
+                }
+                else -> false
+            }
+
+        }
     }
 }

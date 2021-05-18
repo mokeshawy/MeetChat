@@ -19,6 +19,8 @@ class MessageChatViewModel : ViewModel() {
     var mChatArrayListLive      = MutableLiveData<ArrayList<ChatModel>>()
     var mChatArrayList          = ArrayList<ChatModel>()
 
+
+
     // Firebase instance
     var firebaseDatabase        = FirebaseDatabase.getInstance()
     var chatsReference          = firebaseDatabase.getReference(Constants.CHATS_REFERENCE)
@@ -51,18 +53,8 @@ class MessageChatViewModel : ViewModel() {
         chatsReference.child(messageKey.toString()).setValue(messageMap)
             .addOnCompleteListener { task ->
             if(task.isSuccessful){
-                chatListReference.addValueEventListener(object : ValueEventListener{
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if(!snapshot.exists()){
-                            chatListReference.child(senderId).child(receiverId).child(Constants.CHAT_LIST_ID).setValue(Constants.getCurrentUser())
-                        }
-                        chatsListReceiverRef.child(receiverId).child(senderId).child(Constants.CHAT_LIST_ID).setValue(Constants.getCurrentUser())
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(context , error.message.toString() , Toast.LENGTH_SHORT).show()
-                    }
-                })
+                chatListReference.child(senderId).child(receiverId).child(Constants.CHAT_LIST_ID).setValue(receiverId)
+                chatsListReceiverRef.child(receiverId).child(senderId).child(Constants.CHAT_LIST_ID).setValue(senderId)
             }
         }
     }
@@ -74,11 +66,10 @@ class MessageChatViewModel : ViewModel() {
         chatsReference.addValueEventListener( object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 mChatArrayList.clear()
-
                 for ( ds in snapshot.children){
 
                     var chat = ds.getValue(ChatModel::class.java)!!
-                    //Log.e("Sender : ${chat.sender}","Done")
+
                     if( chat.receiver == userSenderId && chat.sender == userReceiverId || chat.receiver == userReceiverId && chat.sender == userSenderId){
 
                         mChatArrayList.add(chat)
@@ -92,4 +83,5 @@ class MessageChatViewModel : ViewModel() {
             }
         })
     }
+
 }
