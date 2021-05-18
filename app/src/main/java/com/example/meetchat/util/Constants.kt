@@ -51,7 +51,7 @@ object Constants {
     const val CHATS_SENDER = "sender"
     const val CHATS_MESSAGE = "message"
     const val CHATS_RECEIVER = "receiver"
-    const val CHATS_IS_SEEN = "isSeen"
+    const val CHATS_IS_SEEN = "seen"
     const val CHATS_URL = "url"
     const val CHATS_MESSAGE_ID = "messageId"
 

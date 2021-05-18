@@ -19,6 +19,8 @@ class MessageChatViewModel : ViewModel() {
     var mChatArrayListLive      = MutableLiveData<ArrayList<ChatModel>>()
     var mChatArrayList          = ArrayList<ChatModel>()
 
+    // variable for seen message
+    var seenListener    : ValueEventListener? = null
 
 
     // Firebase instance
@@ -28,7 +30,10 @@ class MessageChatViewModel : ViewModel() {
     var chatsListReceiverRef    = firebaseDatabase.getReference(Constants.CHAT_LIST_REFERENCE)
 
     //Function send message
-    fun sendMessage(context: Context , senderId : String , receiverId : String){
+    fun sendMessage(context: Context,
+                    senderId : String,
+                    receiverId : String){
+
         if( etSendMessage.value!! == ""){
             Toast.makeText(context , "Please write message first ...",Toast.LENGTH_SHORT).show()
         }else{
@@ -39,7 +44,10 @@ class MessageChatViewModel : ViewModel() {
     }
 
     //function send message to user
-    private fun sendMessageToUser( context: Context , senderId : String , receiverId : String , message : String) {
+    private fun sendMessageToUser( context: Context,
+                                   senderId : String,
+                                   receiverId : String,
+                                   message : String) {
         var messageKey = chatsReference.push().key
 
         val messageMap = HashMap<String , Any>()
@@ -60,7 +68,10 @@ class MessageChatViewModel : ViewModel() {
     }
 
     // function retrieve message
-    fun retrieveMessage( userSenderId : String , userReceiverId : String){
+    fun retrieveMessage( context: Context,
+                         userSenderId : String,
+                         userReceiverId : String){
+
         mChatArrayList = ArrayList()
 
         chatsReference.addValueEventListener( object : ValueEventListener{
@@ -79,9 +90,36 @@ class MessageChatViewModel : ViewModel() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Toast.makeText(context , error.message ,Toast.LENGTH_SHORT).show()
             }
         })
     }
 
+
+
+    // seen message function.
+    fun seenMessage( context: Context,
+                     userId : String){
+
+        var chatsReference   = firebaseDatabase.getReference(Constants.CHATS_REFERENCE)
+        seenListener = chatsReference.addValueEventListener( object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for ( ds in snapshot.children){
+
+                    val chat = ds.getValue(ChatModel::class.java)!!
+
+                    if( chat.receiver == Constants.getCurrentUser() && chat.sender == userId){
+                        var map = HashMap<String , Any>()
+
+                        map[Constants.CHATS_IS_SEEN] = true
+
+                        ds.ref.updateChildren(map)
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context , error.message ,Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 }

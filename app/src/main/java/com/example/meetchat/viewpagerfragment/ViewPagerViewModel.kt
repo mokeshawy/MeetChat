@@ -31,7 +31,7 @@ class ViewPagerViewModel  : ViewModel(){
     var firebaseDatabase        = FirebaseDatabase.getInstance()
     var chatsReference          = firebaseDatabase.getReference(Constants.CHATS_REFERENCE)
 
-    fun viewPagerWork(viewPager2: ViewPager2 , tabLayout : TabLayout , fragmentManager: FragmentManager , lifecycle: Lifecycle ){
+    fun viewPagerWork( context: Context , viewPager2: ViewPager2 , tabLayout : TabLayout , fragmentManager: FragmentManager , lifecycle: Lifecycle ){
 
         // operation work for viewPager2 with fragment
         val fragmentsList = arrayListOf<Fragment>( ChatsFragment() , SearchFragment() , SettingsFragment())
@@ -49,7 +49,7 @@ class ViewPagerViewModel  : ViewModel(){
 
                                 var chat = ds.getValue(ChatModel::class.java)!!
 
-                                if(chat.receiver == Constants.getCurrentUser() && !chat.isSeen){
+                                if(chat.receiver == Constants.getCurrentUser() && !chat.seen ){
                                     countUnReadMessage +=1
                                 }
                             }

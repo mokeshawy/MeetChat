@@ -1,5 +1,6 @@
 package com.example.meetchat.messagecahtfragment
 
+import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
@@ -51,14 +52,21 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
         // firebase instance
         firebaseDatabase    = FirebaseDatabase.getInstance()
         firebaseStorage     =  FirebaseStorage.getInstance().reference
+        reference           = firebaseDatabase.getReference(Constants.USER_REFERENCE)
 
         // receive arguments from users adapter for information user
          userVisit = arguments?.getSerializable(Constants.VISIT_ID) as UsersModel
 
+        // show profile image and name for user visit
+        Picasso.get().load(userVisit.profile).into(binding.ivProfileImageChat)
+        binding.tvUserNameChat.text = userVisit.username
 
+        // iv button send message
         binding.ivSendMessageBtn.setOnClickListener {
             // fun send message
-            messageChatViewModel.sendMessage(requireActivity() , Constants.getCurrentUser() , userVisit.uid)
+            messageChatViewModel.sendMessage(requireActivity(),
+                Constants.getCurrentUser(),
+                userVisit.uid)
         }
 
         //Attach image file
@@ -72,30 +80,18 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
             }
         }
 
-        reference = firebaseDatabase.getReference(Constants.USER_REFERENCE)
-        reference!!.orderByChild(Constants.USER_ID).equalTo(userVisit.uid).addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-
-                for( ds in snapshot.children){
-                    var user = ds.getValue(UsersModel::class.java)!!
-
-                    // Show details for user Visit in tool bar
-                    Picasso.get().load(user.profile).into(binding.ivProfileImageChat)
-                    binding.tvUserNameChat.text = user.username
-                }
-                // call function retrieve message
-                messageChatViewModel.retrieveMessage(Constants.getCurrentUser() , userVisit.uid)
-            }
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
+        // Call function retrieveMessage
+        messageChatViewModel.retrieveMessage(requireActivity(),
+            Constants.getCurrentUser() ,
+            userVisit.uid)
+        // show chatList in adapter
         messageChatViewModel.mChatArrayListLive.observe(viewLifecycleOwner, Observer {
             binding.recyclerViewChats.adapter = RecyclerChatAdapter(it ,userVisit.profile,this)
         })
 
         //call seen message function
-        seenMessage(userVisit.uid)
+        messageChatViewModel.seenMessage(requireActivity(),
+            userVisit.uid)
     }
 
 
@@ -120,7 +116,7 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
                         messageMap[Constants.CHATS_SENDER]      = Constants.getCurrentUser()
                         messageMap[Constants.CHATS_MESSAGE]     = Constants.SENT_YOU_IMAGE
                         messageMap[Constants.CHATS_RECEIVER]    = userVisit.uid
-                        messageMap[Constants.CHATS_IS_SEEN]     = false
+                        messageMap[Constants.CHATS_IS_SEEN]     = 0
                         messageMap[Constants.CHATS_URL]         = downloadUri.toString()
                         messageMap[Constants.CHATS_MESSAGE_ID]  = messageId.toString()
 
@@ -135,11 +131,12 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
     }
 
 
-    // Onclick interface from chat adapter
-    override fun onClickMessageItem( viewHolder: RecyclerChatAdapter.ViewHolder,
-                                     mChatList: ArrayList<ChatModel> ,
-                                     dataSet: ChatModel,
-                                     position: Int) {
+    // OnClick interface from chat adapter
+    @SuppressLint("SetTextI18n")
+    override fun onClickMessageItem(viewHolder: RecyclerChatAdapter.ViewHolder,
+                                    mChatList: ArrayList<ChatModel>,
+                                    dataSet: ChatModel,
+                                    position: Int) {
 
         // images messages
         if( dataSet.message == Constants.SENT_YOU_IMAGE && dataSet.url != ""){
@@ -163,9 +160,10 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
             viewHolder.showTextMessage.text = dataSet.message
         }
 
+
         // sent and seen message..
         if(position == mChatList.size -1){  // Seen.
-            if(mChatList[position].isSeen ){
+            if(dataSet.seen){
                 viewHolder.textSeen.text = "Seen"
                 if(dataSet.message == "sent you an image." && dataSet.url != "" ){
 
@@ -173,7 +171,8 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
                     lp.setMargins(0 ,245 , 10 , 0)
                     viewHolder.textSeen.layoutParams = lp
                 }
-            }else{  // Sent.
+            }
+            else{  // Sent.
                 viewHolder.textSeen.text = "Sent"
                 if(dataSet.message == "sent you an image." && dataSet.url != "" ){
 
@@ -187,35 +186,8 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
         }
     }
 
-    // variable for seen message
-    var seenListener             : ValueEventListener? = null
-
-    // seen message function.
-    fun seenMessage( userId : String){
-        var chatsReference   = firebaseDatabase.getReference(Constants.CHATS_REFERENCE)
-        seenListener = chatsReference.addValueEventListener( object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for ( ds in snapshot.children){
-
-                    val chat = ds.getValue(ChatModel::class.java)!!
-
-                    if( chat.receiver == Constants.getCurrentUser() && chat.sender == userId){
-                        var map = HashMap<String , Any>()
-
-                        map[Constants.CHATS_IS_SEEN] = true
-
-                        ds.ref.updateChildren(map)
-                    }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
-    }
-
     override fun onPause() {
         super.onPause()
-        reference!!.removeEventListener(seenListener!!)
+        reference!!.removeEventListener(messageChatViewModel.seenListener!!)
     }
 }
