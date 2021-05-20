@@ -33,7 +33,7 @@ class RecyclerUsersAdapter(private var mUsers: ArrayList<UsersModel> ,var onClic
         viewHolder.binding.tvUserName.text = mUsers[position].username
         Picasso.get().load(mUsers[position].profile).into(viewHolder.binding.ivProfileImage)
 
-        viewHolder.initialize( viewHolder , mUsers[position] , onClickAdapter , false)
+        viewHolder.initialize( viewHolder , mUsers[position] , onClickAdapter , true)
 
     }
 

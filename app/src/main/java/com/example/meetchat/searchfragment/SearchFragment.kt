@@ -89,5 +89,20 @@ class SearchFragment : Fragment() , OnClickUsersAdapter {
             builder.setNegativeButton("cancel",null)
             builder.create().show()
         }
+
+
+        // update status
+        if(isChecked){
+            if( dataSet.status == "Online"){
+                viewHolder.binding.ivImageOnline.visibility = View.VISIBLE
+                viewHolder.binding.ivImageOffline.visibility = View.GONE
+            }else{
+                viewHolder.binding.ivImageOnline.visibility = View.GONE
+                viewHolder.binding.ivImageOffline.visibility = View.VISIBLE
+            }
+        }else{
+            viewHolder.binding.ivImageOnline.visibility = View.GONE
+            viewHolder.binding.ivImageOffline.visibility = View.GONE
+        }
     }
 }

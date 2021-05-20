@@ -12,6 +12,10 @@ import com.example.meetchat.searchfragment.SearchFragment
 import com.example.meetchat.util.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class ViewPagerFragment : Fragment() {
 
@@ -40,7 +44,7 @@ class ViewPagerFragment : Fragment() {
 
 
         // operation viewPager with tabLayout.
-        viewPagerViewModel.viewPagerWork(
+        viewPagerViewModel.viewPagerWork( requireActivity(),
             binding.viewPager,
             binding.tabLayout,
             requireActivity().supportFragmentManager,

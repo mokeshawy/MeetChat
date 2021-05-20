@@ -15,6 +15,7 @@ import com.example.meetchat.adapter.RecyclerChatListAdapter
 import com.example.meetchat.databinding.FragmentChatsBinding
 import com.example.meetchat.model.UsersModel
 import com.example.meetchat.util.Constants
+import com.google.firebase.iid.FirebaseInstanceId
 
 class ChatsFragment : Fragment() , OnClickChatListAdapter{
 
@@ -26,6 +27,7 @@ class ChatsFragment : Fragment() , OnClickChatListAdapter{
         binding = FragmentChatsBinding.inflate(inflater)
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,13 +42,13 @@ class ChatsFragment : Fragment() , OnClickChatListAdapter{
         chatsViewModel.mUsersLiveData.observe(viewLifecycleOwner , Observer {
             binding.recyclerViewChatList.adapter = RecyclerChatListAdapter(it , this)
         })
+
     }
 
     override fun onClickChatListAdapter(
         viewHolder: RecyclerChatListAdapter.ViewHolder,
         dataSet: UsersModel,
-        position: Int,
-        isChecked: Boolean ) {
+        position: Int , isChecked : Boolean) {
         // set click listener on item view
         viewHolder.itemView.setOnClickListener {
             val options = arrayOf<CharSequence>(
@@ -68,5 +70,31 @@ class ChatsFragment : Fragment() , OnClickChatListAdapter{
             builder.setNegativeButton("cancel",null)
             builder.create().show()
         }
+
+        // Get last message.
+        if(isChecked){
+            chatsViewModel.retrieveLastMessage(requireActivity() ,
+                dataSet.uid ,
+                viewHolder.binding.tvLastMessage)
+
+        }else{
+            viewHolder.binding.tvLastMessage.visibility = View.GONE
+        }
+
+
+        if(isChecked){
+            if( dataSet.status == "Online"){
+                viewHolder.binding.ivImageOnline.visibility = View.VISIBLE
+                viewHolder.binding.ivImageOffline.visibility = View.GONE
+            }else{
+                viewHolder.binding.ivImageOnline.visibility = View.GONE
+                viewHolder.binding.ivImageOffline.visibility = View.VISIBLE
+            }
+        }else{
+            viewHolder.binding.ivImageOnline.visibility = View.GONE
+            viewHolder.binding.ivImageOffline.visibility = View.GONE
+        }
+
+
     }
 }

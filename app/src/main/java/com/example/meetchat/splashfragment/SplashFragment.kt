@@ -24,11 +24,7 @@ class SplashFragment : Fragment() {
 
         // handler splash fragment open to viewPager fragment
         @Suppress("DEPRECATION")
-        Handler().postDelayed(
-            {
-                findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
-
-            }, 2000
-        )
+        Handler()
+        .postDelayed( { findNavController().navigate(R.id.action_splashFragment_to_loginFragment) }, 2000 )
     }
 }

@@ -48,27 +48,32 @@ object Constants {
     const val CHATS_REFERENCE = "Chats"
 
     // Child Chats reference in real time database
-    const val CHATS_SENDER = "sender"
-    const val CHATS_MESSAGE = "message"
-    const val CHATS_RECEIVER = "receiver"
-    const val CHATS_IS_SEEN = "seen"
-    const val CHATS_URL = "url"
-    const val CHATS_MESSAGE_ID = "messageId"
+    const val CHATS_SENDER      = "sender"
+    const val CHATS_MESSAGE     = "message"
+    const val CHATS_RECEIVER    = "receiver"
+    const val CHATS_IS_SEEN     = "seen"
+    const val CHATS_URL         = "url"
+    const val CHATS_MESSAGE_ID  = "messageId"
 
     // Users Adapter const key
     const val VISIT_ID = "visit_id"
 
     // ChatList Reference
-    const val CHAT_LIST_REFERENCE = "ChatList"
-    const val SENT_YOU_IMAGE = "sent you an image."
+    const val CHAT_LIST_REFERENCE   = "ChatList"
+    const val SENT_YOU_IMAGE        = "sent you an image."
 
     // Child ChatList reference
     const val CHAT_LIST_ID = "id"
 
+
+    // view full image page key
+    const val FULL_IMAGE_VIEW = "imageUrl"
+
+
     // fun get id for user login
     fun getCurrentUser() : String{
-        var firebaseAuth = FirebaseAuth.getInstance().currentUser
-        var currentUser = ""
+        var firebaseAuth    = FirebaseAuth.getInstance().currentUser
+        var currentUser     = ""
         if( currentUser !=null){
             currentUser = firebaseAuth.uid
         }
@@ -76,8 +81,8 @@ object Constants {
     }
 
 
+    // Progress dialog.
     lateinit var mProgressDialog : Dialog
-
     fun showProgressDialog( text : String ,context: Context){
 
         mProgressDialog = Dialog(context)
@@ -95,7 +100,7 @@ object Constants {
 
     }
 
-    // hide progress bar
+    // hide progress bar.
     fun hideProgressDialog(){
         mProgressDialog.dismiss()
     }

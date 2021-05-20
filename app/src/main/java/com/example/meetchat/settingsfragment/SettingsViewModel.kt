@@ -5,7 +5,9 @@ import android.content.Context
 import android.net.Uri
 import android.view.View
 import android.widget.*
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
 import com.example.meetchat.R
 import com.example.meetchat.model.UsersModel
 import com.example.meetchat.util.Constants
@@ -42,7 +44,6 @@ class SettingsViewModel : ViewModel(){
                 Constants.hideProgressDialog()
             }
         }
-
     }
 
     // function operation work for upload profile image
@@ -80,6 +81,7 @@ class SettingsViewModel : ViewModel(){
                     tv_username_settings.text = user.username
                     Picasso.get().load(user.cover).into(iv_cover_settings)
                     Picasso.get().load(user.profile).into(iv_profile_settings)
+
                 }
             }
             override fun onCancelled(error: DatabaseError) {

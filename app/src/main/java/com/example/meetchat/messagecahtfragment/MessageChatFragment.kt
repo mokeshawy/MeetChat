@@ -1,6 +1,7 @@
 package com.example.meetchat.messagecahtfragment
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -94,12 +96,15 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
             userVisit.uid)
     }
 
-
+    // select photo for send in message
     @Suppress("DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        var chatReference   = firebaseDatabase.getReference(Constants.CHATS_REFERENCE)
+        var chatReference           = firebaseDatabase.getReference(Constants.CHATS_REFERENCE)
+        var chatListReference       = firebaseDatabase.getReference(Constants.CHAT_LIST_REFERENCE)
+        var chatsListReceiverRef    = firebaseDatabase.getReference(Constants.CHAT_LIST_REFERENCE)
         var reference = firebaseDatabase.reference
+
         if( requestCode == Constants.PICK_ATTACH_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK){
 
             val loadingBar = ProgressDialog(requireActivity())
@@ -116,13 +121,20 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
                         messageMap[Constants.CHATS_SENDER]      = Constants.getCurrentUser()
                         messageMap[Constants.CHATS_MESSAGE]     = Constants.SENT_YOU_IMAGE
                         messageMap[Constants.CHATS_RECEIVER]    = userVisit.uid
-                        messageMap[Constants.CHATS_IS_SEEN]     = 0
+                        messageMap[Constants.CHATS_IS_SEEN]     = false
                         messageMap[Constants.CHATS_URL]         = downloadUri.toString()
                         messageMap[Constants.CHATS_MESSAGE_ID]  = messageId.toString()
 
                         chatReference.child(messageId.toString()).setValue(messageMap)
+                            .addOnCompleteListener { task ->
+                                if(task.isSuccessful){
+                                    loadingBar.dismiss()
+                                    chatListReference.child(Constants.getCurrentUser()).child(userVisit.uid).child(Constants.CHAT_LIST_ID).setValue(userVisit.uid)
+                                    chatsListReceiverRef.child(userVisit.uid).child(Constants.getCurrentUser()).child(Constants.CHAT_LIST_ID).setValue(Constants.getCurrentUser())
+                                    }
+                                }
                     }
-                    loadingBar.dismiss()
+
                 }else{
                     Toast.makeText(requireActivity(),uploadFile.exception!!.message.toString(),Toast.LENGTH_SHORT).show()
                 }
@@ -138,56 +150,24 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
                                     dataSet: ChatModel,
                                     position: Int) {
 
-        // images messages
-        if( dataSet.message == Constants.SENT_YOU_IMAGE && dataSet.url != ""){
-
-            // image message - right side
-            if( dataSet.sender == Constants.getCurrentUser()){
-
-                viewHolder.showTextMessage.visibility   = View.GONE
-                viewHolder.rightImageView!!.visibility  = View.VISIBLE
-                Picasso.get().load(dataSet.url).into(viewHolder.rightImageView)
-
-            }else if(dataSet.sender != Constants.getCurrentUser()){ //=> image message - left side
-
-                viewHolder.showTextMessage.visibility = View.GONE
-                viewHolder.leftImageView!!.visibility = View.VISIBLE
-                Picasso.get().load(dataSet.url).into(viewHolder.leftImageView)
-
-            }
-
-        }else{  //=> text message
-            viewHolder.showTextMessage.text = dataSet.message
-        }
+        // Call function for operation show image sent and show text message sent and delete image and message from chat.
+        messageChatViewModel.showImageAndTextMessage( view ,
+            viewHolder,
+            dataSet)
 
 
-        // sent and seen message..
-        if(position == mChatList.size -1){  // Seen.
-            if(dataSet.seen){
-                viewHolder.textSeen.text = "Seen"
-                if(dataSet.message == "sent you an image." && dataSet.url != "" ){
+        // Call function sent and seen message.
+        messageChatViewModel.sentAndSeenMessage(mChatList,
+            position,
+            dataSet,
+            viewHolder.textSeen)
 
-                    val lp : RelativeLayout.LayoutParams = viewHolder.textSeen.layoutParams as RelativeLayout.LayoutParams
-                    lp.setMargins(0 ,245 , 10 , 0)
-                    viewHolder.textSeen.layoutParams = lp
-                }
-            }
-            else{  // Sent.
-                viewHolder.textSeen.text = "Sent"
-                if(dataSet.message == "sent you an image." && dataSet.url != "" ){
-
-                    val lp : RelativeLayout.LayoutParams = viewHolder.textSeen.layoutParams as RelativeLayout.LayoutParams
-                    lp.setMargins(0 ,245 , 10 , 0)
-                    viewHolder.textSeen.layoutParams = lp
-                }
-            }
-        }else{
-            viewHolder.textSeen.visibility = View.GONE
-        }
     }
+
 
     override fun onPause() {
         super.onPause()
         reference!!.removeEventListener(messageChatViewModel.seenListener!!)
     }
+
 }

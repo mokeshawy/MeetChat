@@ -1,5 +1,6 @@
 package com.example.meetchat.chatsfragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.example.meetchat.model.ChatListModel
+import com.example.meetchat.model.ChatModel
 import com.example.meetchat.model.UsersModel
 import com.example.meetchat.util.Constants
 import com.google.firebase.database.DataSnapshot
@@ -24,7 +26,10 @@ class ChatsViewModel : ViewModel() {
 
     var firebaseDatabase    = FirebaseDatabase.getInstance()
     var usersReference      = firebaseDatabase.getReference(Constants.USER_REFERENCE)
+    var chatsReference      = firebaseDatabase.getReference(Constants.CHATS_REFERENCE)
     var chatListReference   = firebaseDatabase.getReference(Constants.CHAT_LIST_REFERENCE)
+
+    var lastMessage : String = ""
 
 
 
@@ -82,6 +87,35 @@ class ChatsViewModel : ViewModel() {
                     tv_no_message.visibility            = View.VISIBLE
                 }
             }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context , error.message , Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+
+    // function show latest message.
+    @SuppressLint("SetTextI18n")
+    fun retrieveLastMessage(context: Context , chatUserId : String , tv_last_message : TextView){
+        lastMessage = "Default Message"
+
+        chatsReference.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (ds in snapshot.children){
+                    val chat = ds.getValue(ChatModel::class.java)!!
+
+                    if( chat.receiver == Constants.getCurrentUser() && chat.sender == chatUserId || chat.receiver == chatUserId &&  chat.sender == Constants.getCurrentUser()){
+                        lastMessage = chat.message
+                    }
+                }
+                when(lastMessage){
+                    "Default Message" -> tv_last_message.text = "No Message"
+                    "sent you an image." -> tv_last_message.text = "Image Sent."
+                    else -> tv_last_message.text = lastMessage
+                }
+                lastMessage = "Default Message"
+            }
+
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(context , error.message , Toast.LENGTH_SHORT).show()
             }

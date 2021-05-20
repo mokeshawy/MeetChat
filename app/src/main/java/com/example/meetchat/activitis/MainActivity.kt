@@ -9,6 +9,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.meetchat.R
 import com.example.meetchat.databinding.ActivityMainBinding
+import com.example.meetchat.util.Constants
+import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,9 +40,30 @@ class MainActivity : AppCompatActivity() {
                 R.id.searchFragment         -> supportActionBar!!.hide()
                 R.id.chatsFragment          -> supportActionBar!!.hide()
                 R.id.messageChatFragment    -> supportActionBar!!.hide()
+                R.id.viewFullImageFragment  -> supportActionBar!!.hide()
 
                 else -> supportActionBar!!.show()
             }
         }
+    }
+
+
+    private fun updateStatus(status : String){
+        var firebaseDatabase        = FirebaseDatabase.getInstance()
+        var usersReference          = firebaseDatabase.getReference(Constants.USER_REFERENCE)
+        var map = HashMap<String , Any>()
+
+        map[Constants.USER_STATUS] = status
+        usersReference.child(Constants.getCurrentUser()).updateChildren(map)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateStatus("Online")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        updateStatus("Offline")
     }
 }

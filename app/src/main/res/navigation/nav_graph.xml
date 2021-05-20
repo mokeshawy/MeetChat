@@ -93,7 +93,18 @@
         android:label="fragment_message_chat"
         tools:layout="@layout/fragment_message_chat" >
         <action
-            android:id="@+id/action_messageChatFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
+            android:id="@+id/action_messageChatFragment_to_viewFullImageFragment"
+            app:destination="@id/viewFullImageFragment"
+            app:enterAnim="@android:anim/fade_in" />
     </fragment>
+    <fragment
+        android:id="@+id/viewFullImageFragment"
+        android:name="com.example.meetchat.viewfullimagefragment.ViewFullImageFragment"
+        android:label="fragment_view_full_image"
+        tools:layout="@layout/fragment_view_full_image" />
+    <fragment
+        android:id="@+id/visitUserProfileFragment"
+        android:name="com.example.meetchat.visituserprofilefragment.VisitUserProfileFragment"
+        android:label="fragment_visit_user_profile"
+        tools:layout="@layout/fragment_visit_user_profile" />
 </navigation>

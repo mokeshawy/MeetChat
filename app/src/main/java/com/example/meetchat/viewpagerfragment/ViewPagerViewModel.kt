@@ -29,9 +29,14 @@ class ViewPagerViewModel  : ViewModel(){
 
     // Firebase instance
     var firebaseDatabase        = FirebaseDatabase.getInstance()
+    var usersReference          = firebaseDatabase.getReference(Constants.USER_REFERENCE)
     var chatsReference          = firebaseDatabase.getReference(Constants.CHATS_REFERENCE)
 
-    fun viewPagerWork( context: Context , viewPager2: ViewPager2 , tabLayout : TabLayout , fragmentManager: FragmentManager , lifecycle: Lifecycle ){
+    fun viewPagerWork( context: Context ,
+                       viewPager2: ViewPager2 ,
+                       tabLayout : TabLayout ,
+                       fragmentManager: FragmentManager ,
+                       lifecycle: Lifecycle ){
 
         // operation work for viewPager2 with fragment
         val fragmentsList = arrayListOf<Fragment>( ChatsFragment() , SearchFragment() , SettingsFragment())
@@ -61,7 +66,7 @@ class ViewPagerViewModel  : ViewModel(){
                         }
 
                         override fun onCancelled(error: DatabaseError) {
-                            TODO("Not yet implemented")
+                            Toast.makeText(context , error.message ,Toast.LENGTH_SHORT).show()
                         }
                     })
                 }

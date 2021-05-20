@@ -8,10 +8,6 @@ import com.example.meetchat.R
 class ForgetPasswordViewModel : ViewModel(){
 
 
-
-
-
-
     // back to login page by toolbar icon back
     fun backToLoginPage(view: View, toolbar: androidx.appcompat.widget.Toolbar){
         // set icon on action bar for back to login fragment

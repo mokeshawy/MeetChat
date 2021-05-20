@@ -3,7 +3,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.meetchat.`interface`.OnClickChatListAdapter
-import com.example.meetchat.`interface`.OnClickUsersAdapter
 import com.example.meetchat.databinding.UserSearchItemBinding
 import com.example.meetchat.model.UsersModel
 import com.squareup.picasso.Picasso
@@ -34,7 +33,7 @@ class RecyclerChatListAdapter(private var mUsers: ArrayList<UsersModel> , var on
         viewHolder.binding.tvUserName.text = mUsers[position].username
         Picasso.get().load(mUsers[position].profile).into(viewHolder.binding.ivProfileImage)
 
-        viewHolder.initialize( viewHolder , mUsers[position] , onClickChatListAdapter , false)
+        viewHolder.initialize( viewHolder , mUsers[position] , onClickChatListAdapter , true)
 
     }
 
