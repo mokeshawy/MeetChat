@@ -86,12 +86,4 @@ class RegisterViewModel : ViewModel(){
         Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment)
     }
 
-    // back to login page by toolbar icon back
-    fun backToLoginPage(view: View, toolbar: androidx.appcompat.widget.Toolbar){
-        // set icon on action bar for back to login page
-        toolbar.setNavigationIcon(R.drawable.ic_vector_arrow_back)
-        toolbar.setNavigationOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment)
-        }
-    }
 }

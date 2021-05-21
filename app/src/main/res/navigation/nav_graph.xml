@@ -31,6 +31,10 @@
             app:destination="@id/messageChatFragment"
             app:enterAnim="@android:anim/fade_in"
             app:popUpTo="@id/searchFragment" />
+        <action
+            android:id="@+id/action_viewPagerFragment_to_visitUserProfileFragment"
+            app:destination="@id/visitUserProfileFragment"
+            app:enterAnim="@android:anim/fade_in" />
     </fragment>
     <fragment
         android:id="@+id/chatsFragment"
@@ -67,7 +71,7 @@
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment"
             app:enterAnim="@android:anim/fade_in"
-            app:popUpTo="@id/nav_graph" />
+            app:popUpTo="@id/loginFragment" />
         <action
             android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
             app:destination="@id/forgetPasswordFragment"
@@ -106,5 +110,9 @@
         android:id="@+id/visitUserProfileFragment"
         android:name="com.example.meetchat.visituserprofilefragment.VisitUserProfileFragment"
         android:label="fragment_visit_user_profile"
-        tools:layout="@layout/fragment_visit_user_profile" />
+        tools:layout="@layout/fragment_visit_user_profile" >
+        <action
+            android:id="@+id/action_visitUserProfileFragment_to_viewFullImageFragment"
+            app:destination="@id/viewFullImageFragment" />
+    </fragment>
 </navigation>

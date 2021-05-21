@@ -45,34 +45,31 @@ class LoginViewModel : ViewModel() {
             firebaseAuth.signInWithEmailAndPassword( etEnterEmail.value!! , etEnterPassword.value!!).addOnCompleteListener {
                 if(it.isSuccessful){
                     if(firebaseAuth.currentUser?.isEmailVerified!!){
+
                         Snackbar.make(view ,context.resources.getString(R.string.msg_welcome_user_login), Snackbar.LENGTH_SHORT).show()
-                        if( Constants.getCurrentUser() != null){
+                        userReference.orderByChild(Constants.USER_ID).equalTo(Constants.getCurrentUser()).addValueEventListener( object : ValueEventListener{
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                for ( ds in snapshot.children){
 
-                            userReference.orderByChild(Constants.USER_ID).equalTo(Constants.getCurrentUser()).addValueEventListener( object : ValueEventListener{
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    for ( ds in snapshot.children){
+                                    val user = ds.getValue(UsersModel::class.java)!!
 
-                                        var user = ds.getValue(UsersModel::class.java)!!
-
-                                        var bundle = Bundle()
-                                        bundle.putSerializable(Constants.SERIALIZABLE_USERS , user)
-                                        try{
-                                            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_viewPagerFragment , bundle)
-                                            Constants.hideProgressDialog()
-                                        }catch(e:Exception){
-
-                                        }
+                                    var bundle = Bundle()
+                                    bundle.putSerializable(Constants.SERIALIZABLE_USERS , user)
+                                    try{
+                                        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_viewPagerFragment , bundle)
+                                        Constants.hideProgressDialog()
+                                    }catch(e:Exception){
 
                                     }
-                                }
-                                override fun onCancelled(error: DatabaseError) {
-                                    Toast.makeText( context , error.message , Toast.LENGTH_SHORT).show()
-                                    Constants.hideProgressDialog()
-                                }
 
-                            })
+                                }
+                            }
+                            override fun onCancelled(error: DatabaseError) {
+                                Toast.makeText( context , error.message , Toast.LENGTH_SHORT).show()
+                                Constants.hideProgressDialog()
+                            }
 
-                        }
+                        })
                     }else{
                         Snackbar.make(view ,context.resources.getString(R.string.err_msg_confirm_email), Snackbar.LENGTH_SHORT).show()
                         Constants.hideProgressDialog()

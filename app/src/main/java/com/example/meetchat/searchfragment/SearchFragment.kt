@@ -83,7 +83,9 @@ class SearchFragment : Fragment() , OnClickUsersAdapter {
                    findNavController().navigate(R.id.action_viewPagerFragment_to_messageChatFragment , bundle)
                 }
                 if( position == 1){
-
+                    var bundle = Bundle()
+                    bundle.putSerializable(Constants.SERIALIZABLE_USERS_PROFILE,dataSet)
+                    findNavController().navigate(R.id.action_viewPagerFragment_to_visitUserProfileFragment,bundle)
                 }
             }
             builder.setNegativeButton("cancel",null)

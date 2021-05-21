@@ -33,6 +33,9 @@ object Constants {
 
     //Serializable Key
     const val SERIALIZABLE_USERS = "Users"
+    const val SERIALIZABLE_USERS_PROFILE = "UserProfile"
+    const val SERIALIZABLE_USERS_PROFILE_SHOW_FULL_IMAGE = "FullImageProfile"
+    const val SERIALIZABLE_USERS_PROFILE_SHOW_FULL_COVER = "FullImageCover"
 
     // pic image key
     const val PICK_COVER_IMAGE_REQUEST      = 10

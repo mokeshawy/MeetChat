@@ -11,10 +11,12 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.meetchat.R
 import com.example.meetchat.`interface`.OnClickChatListAdapter
+import com.example.meetchat.activitis.MainActivity
 import com.example.meetchat.adapter.RecyclerChatListAdapter
 import com.example.meetchat.databinding.FragmentChatsBinding
 import com.example.meetchat.model.UsersModel
 import com.example.meetchat.util.Constants
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.iid.FirebaseInstanceId
 
 class ChatsFragment : Fragment() , OnClickChatListAdapter{
@@ -48,7 +50,8 @@ class ChatsFragment : Fragment() , OnClickChatListAdapter{
     override fun onClickChatListAdapter(
         viewHolder: RecyclerChatListAdapter.ViewHolder,
         dataSet: UsersModel,
-        position: Int , isChecked : Boolean) {
+        position: Int ,
+        isChecked : Boolean) {
         // set click listener on item view
         viewHolder.itemView.setOnClickListener {
             val options = arrayOf<CharSequence>(
@@ -64,7 +67,9 @@ class ChatsFragment : Fragment() , OnClickChatListAdapter{
                     findNavController().navigate(R.id.action_viewPagerFragment_to_messageChatFragment , bundle)
                 }
                 if( position == 1){
-
+                    var bundle = Bundle()
+                    bundle.putSerializable(Constants.SERIALIZABLE_USERS_PROFILE,dataSet)
+                    findNavController().navigate(R.id.action_viewPagerFragment_to_visitUserProfileFragment,bundle)
                 }
             }
             builder.setNegativeButton("cancel",null)
@@ -94,7 +99,6 @@ class ChatsFragment : Fragment() , OnClickChatListAdapter{
             viewHolder.binding.ivImageOnline.visibility = View.GONE
             viewHolder.binding.ivImageOffline.visibility = View.GONE
         }
-
-
     }
+
 }

@@ -14,9 +14,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import com.example.meetchat.R
+import com.example.meetchat.activitis.MainActivity
 import com.example.meetchat.databinding.FragmentSettingsBinding
 import com.example.meetchat.model.UsersModel
 import com.example.meetchat.util.Constants
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.util.jar.Manifest
 
 class SettingsFragment : Fragment() {
@@ -102,6 +107,10 @@ class SettingsFragment : Fragment() {
             var intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult( intent,Constants.PICK_COVER_IMAGE_REQUEST )
+
+            CoroutineScope(Dispatchers.Main).launch {
+                (activity as MainActivity).updateStatus("Online")
+            }
         }
     }
 
@@ -114,6 +123,10 @@ class SettingsFragment : Fragment() {
             var intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent , Constants.PICK_PROFILE_IMAGE_REQUEST)
+        }
+
+        CoroutineScope(Dispatchers.Main).launch {
+            (activity as MainActivity).updateStatus("Online")
         }
     }
 

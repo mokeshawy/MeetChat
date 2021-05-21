@@ -33,8 +33,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:background="@drawable/item_gray_border_background">
+                    android:padding="10dp">
 
                     <ImageView
                         android:id="@+id/iv_cover_settings"
@@ -78,7 +77,6 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="6dp"
-                android:background="@drawable/item_gray_border_background"
                 android:layout_below="@+id/cv1">
 
                 <ImageView

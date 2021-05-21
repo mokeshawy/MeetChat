@@ -11,6 +11,7 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="login"><u>Login</u></string>
     <string name="title_bar_register">Register</string>
+    <string name="err_no_select_image">You did not choose any image</string>
 
     <!-- Message validate input register new account -->
     <string name="err_msg_please_enter_your_name">Please enter your name</string>
@@ -41,7 +42,8 @@
     <!-- Progress bar -->
     <string name="please_wait">Please wait&#8230;</string>
 
-    <!-- register page -->
-    <string name="err_no_select_image">You did not choose any image</string>
+    <!-- visit user profile page -->
+    <string name="title_bar_visit_profile">Profile</string>
+
 
 </resources>

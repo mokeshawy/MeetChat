@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.meetchat.R
 import com.example.meetchat.databinding.FragmentRegisterBinding
@@ -43,7 +44,10 @@ class RegisterFragment : Fragment() {
         }
 
 
-        // call function for back to login by icon back toolbar
-        registerViewModel.backToLoginPage(view , binding.toolBarRegister)
+        // toolbar for click back to login page.
+        binding.toolBarRegister.setNavigationIcon(R.drawable.ic_vector_arrow_back)
+        binding.toolBarRegister.setNavigationOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment)
+        }
     }
 }

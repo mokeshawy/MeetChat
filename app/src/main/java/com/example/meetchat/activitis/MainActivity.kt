@@ -11,6 +11,10 @@ import com.example.meetchat.R
 import com.example.meetchat.databinding.ActivityMainBinding
 import com.example.meetchat.util.Constants
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,17 +45,21 @@ class MainActivity : AppCompatActivity() {
                 R.id.chatsFragment          -> supportActionBar!!.hide()
                 R.id.messageChatFragment    -> supportActionBar!!.hide()
                 R.id.viewFullImageFragment  -> supportActionBar!!.hide()
+                R.id.visitUserProfileFragment -> supportActionBar!!.hide()
 
                 else -> supportActionBar!!.show()
             }
         }
+
+
+
+
     }
 
-
-    private fun updateStatus(status : String){
-        var firebaseDatabase        = FirebaseDatabase.getInstance()
-        var usersReference          = firebaseDatabase.getReference(Constants.USER_REFERENCE)
-        var map = HashMap<String , Any>()
+   suspend fun updateStatus(status : String){
+        val firebaseDatabase        = FirebaseDatabase.getInstance()
+        val usersReference          = firebaseDatabase.getReference(Constants.USER_REFERENCE)
+        val map = HashMap<String , Any>()
 
         map[Constants.USER_STATUS] = status
         usersReference.child(Constants.getCurrentUser()).updateChildren(map)
@@ -59,11 +67,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        updateStatus("Online")
+        CoroutineScope(Dispatchers.Main).launch {
+            updateStatus("Online")
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        updateStatus("Offline")
+        CoroutineScope(Dispatchers.IO).launch {
+            updateStatus("Offline")
+        }
     }
 }

@@ -24,8 +24,16 @@ class ViewFullImageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // show full image from sent image message.
         var image = arguments?.getString(Constants.FULL_IMAGE_VIEW)
         Picasso.get().load(image).into(binding.ivImageViewer)
 
+        // show full image profile fro user visit profile.
+        var imageFromVisitUser = arguments?.getString(Constants.SERIALIZABLE_USERS_PROFILE_SHOW_FULL_IMAGE)
+        Picasso.get().load(imageFromVisitUser).into(binding.ivImageViewer)
+
+        // show full image cover for user visit profile.
+        var coverFromVisitUser = arguments?.getString(Constants.SERIALIZABLE_USERS_PROFILE_SHOW_FULL_COVER)
+        Picasso.get().load(coverFromVisitUser).into(binding.ivCoverViewer)
     }
 }
