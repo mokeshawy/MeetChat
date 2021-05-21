@@ -94,9 +94,14 @@ class MessageChatFragment : Fragment() , OnClickChatAdapter{
         //call seen message function
         messageChatViewModel.seenMessage(requireActivity(),
             userVisit.uid)
+
+        binding.ivProfileImageChat.setOnClickListener {
+            val bundle1 = bundleOf(Constants.SERIALIZABLE_USERS_PROFILE_SHOW_FULL_IMAGE to userVisit.profile)
+            findNavController().navigate(R.id.action_messageChatFragment_to_viewFullImageFragment , bundle1)
+        }
     }
 
-    // select photo for send in message
+    // select photo for send  message
     @Suppress("DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

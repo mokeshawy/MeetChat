@@ -114,5 +114,9 @@
         <action
             android:id="@+id/action_visitUserProfileFragment_to_viewFullImageFragment"
             app:destination="@id/viewFullImageFragment" />
+        <action
+            android:id="@+id/action_visitUserProfileFragment_to_messageChatFragment"
+            app:destination="@id/messageChatFragment"
+            app:enterAnim="@android:anim/fade_in" />
     </fragment>
 </navigation>

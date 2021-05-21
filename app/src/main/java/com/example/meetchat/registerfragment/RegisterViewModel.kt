@@ -48,10 +48,10 @@ class RegisterViewModel : ViewModel(){
                 .addOnCompleteListener {
                     if(it.isSuccessful){
                         firebaseAuth.currentUser?.sendEmailVerification()
-                        var uid = firebaseAuth.currentUser?.uid
+                        val uid = firebaseAuth.currentUser?.uid
 
                         // make insert data for user to realtime database use HashMap
-                        var map = HashMap<String , Any>()
+                        val map = HashMap<String , Any>()
 
                         map[Constants.USER_ID]          = uid.toString()
                         map[Constants.USER_NAME]        = etEnterName.value!!

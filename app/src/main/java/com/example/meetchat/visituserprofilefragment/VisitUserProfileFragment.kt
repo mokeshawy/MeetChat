@@ -69,5 +69,12 @@ class VisitUserProfileFragment : Fragment() {
             val bundle2 = bundleOf(Constants.SERIALIZABLE_USERS_PROFILE_SHOW_FULL_COVER to userVisit.cover)
             findNavController().navigate(R.id.action_visitUserProfileFragment_to_viewFullImageFragment , bundle2)
         }
+
+        // go send message from visit user profile.
+        binding.btnSendMsg.setOnClickListener {
+            var bundle = Bundle()
+            bundle.putSerializable(Constants.VISIT_ID , userVisit)
+            findNavController().navigate(R.id.action_visitUserProfileFragment_to_messageChatFragment , bundle)
+        }
     }
 }
