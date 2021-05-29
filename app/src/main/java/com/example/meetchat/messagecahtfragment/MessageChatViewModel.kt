@@ -144,7 +144,6 @@ class MessageChatViewModel : ViewModel() {
                                 viewHolder: RecyclerChatAdapter.ViewHolder,
                                 dataSet: ChatModel ){
 
-
         // images messages
         if( dataSet.message == Constants.SENT_YOU_IMAGE && dataSet.url != ""){
 

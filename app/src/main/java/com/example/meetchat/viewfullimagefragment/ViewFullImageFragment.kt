@@ -26,7 +26,7 @@ class ViewFullImageFragment : Fragment() {
 
         // show full image from sent image message.
         var image = arguments?.getString(Constants.FULL_IMAGE_VIEW)
-        Picasso.get().load(image).into(binding.ivImageViewer)
+        Picasso.get().load(image).into(binding.ivImageSentMessage)
 
         // show full image profile fro user visit profile.
         var imageFromVisitUser = arguments?.getString(Constants.SERIALIZABLE_USERS_PROFILE_SHOW_FULL_IMAGE)

@@ -5,6 +5,7 @@ import android.content.Context
 import android.widget.TextView
 import com.example.meetchat.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 object Constants {
 
@@ -73,6 +74,9 @@ object Constants {
     const val FULL_IMAGE_VIEW = "imageUrl"
 
 
+    // Child for user Reference and key for dataStore
+    const val DATA_STORE_NAME   : String  = "UsersPreference"
+
     // fun get id for user login
     fun getCurrentUser() : String{
         var firebaseAuth    = FirebaseAuth.getInstance().currentUser
@@ -106,5 +110,16 @@ object Constants {
     // hide progress bar.
     fun hideProgressDialog(){
         mProgressDialog.dismiss()
+    }
+
+
+    // function for change status
+    suspend fun updateStatus(status : String){
+
+        val firebaseDatabase        = FirebaseDatabase.getInstance()
+        val usersReference          = firebaseDatabase.getReference(Constants.USER_REFERENCE)
+        val map = HashMap<String , Any>()
+        map[Constants.USER_STATUS] = status
+        usersReference.child(Constants.getCurrentUser()).updateChildren(map)
     }
 }

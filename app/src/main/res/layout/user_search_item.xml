@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:textSize="19sp"
+            android:textSize="14sp"
             android:maxLines="1"
             android:textColor="@color/colorSecondaryText"
             android:layout_toRightOf="@+id/iv_profile_image"

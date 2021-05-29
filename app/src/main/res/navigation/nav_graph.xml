@@ -35,6 +35,9 @@
             android:id="@+id/action_viewPagerFragment_to_visitUserProfileFragment"
             app:destination="@id/visitUserProfileFragment"
             app:enterAnim="@android:anim/fade_in" />
+        <action
+            android:id="@+id/action_viewPagerFragment_to_viewFullImageFragment"
+            app:destination="@id/viewFullImageFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatsFragment"
@@ -78,7 +81,9 @@
             app:enterAnim="@android:anim/fade_in" />
         <action
             android:id="@+id/action_loginFragment_to_viewPagerFragment"
-            app:destination="@id/viewPagerFragment" />
+            app:destination="@id/viewPagerFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/forgetPasswordFragment"

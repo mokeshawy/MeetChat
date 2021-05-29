@@ -109,7 +109,7 @@ class SettingsFragment : Fragment() {
             startActivityForResult( intent,Constants.PICK_COVER_IMAGE_REQUEST )
 
             CoroutineScope(Dispatchers.Main).launch {
-                (activity as MainActivity).updateStatus("Online")
+                Constants.updateStatus("Online")
             }
         }
     }
@@ -126,7 +126,7 @@ class SettingsFragment : Fragment() {
         }
 
         CoroutineScope(Dispatchers.Main).launch {
-            (activity as MainActivity).updateStatus("Online")
+            Constants.updateStatus("Online")
         }
     }
 

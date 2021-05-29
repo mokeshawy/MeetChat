@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.meetchat.R
 import com.example.meetchat.databinding.ActivityMainBinding
 import com.example.meetchat.util.Constants
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,26 +57,75 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-   suspend fun updateStatus(status : String){
-        val firebaseDatabase        = FirebaseDatabase.getInstance()
-        val usersReference          = firebaseDatabase.getReference(Constants.USER_REFERENCE)
-        val map = HashMap<String , Any>()
 
-        map[Constants.USER_STATUS] = status
-        usersReference.child(Constants.getCurrentUser()).updateChildren(map)
+    override fun onPause() {
+        super.onPause()
+        // operation work for navigation component for fragment
+        val navHostFragment : NavHostFragment   = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController   : NavController     = navHostFragment.navController
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.viewPagerFragment -> {
+                    CoroutineScope(Dispatchers.IO).async {
+                        Constants.updateStatus("Offline")
+                    }
+                }
+
+                R.id.messageChatFragment -> {
+                    CoroutineScope(Dispatchers.IO).async {
+                        Constants.updateStatus("Offline")
+                    }
+                }
+
+                R.id.viewFullImageFragment -> {
+                    CoroutineScope(Dispatchers.IO).async {
+                        Constants.updateStatus("Offline")
+                    }
+                }
+
+                R.id.visitUserProfileFragment -> {
+                    CoroutineScope(Dispatchers.IO).async {
+                        Constants.updateStatus("Offline")
+                    }
+                }
+
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        CoroutineScope(Dispatchers.Main).launch {
-            updateStatus("Online")
-        }
-    }
+        // operation work for navigation component for fragment
+        val navHostFragment : NavHostFragment   = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController   : NavController     = navHostFragment.navController
 
-    override fun onPause() {
-        super.onPause()
-        CoroutineScope(Dispatchers.IO).launch {
-            updateStatus("Offline")
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when(destination.id){
+                R.id.viewPagerFragment ->{
+                    CoroutineScope(Dispatchers.Main).async {
+                        Constants.updateStatus("Online")
+                    }
+                }
+
+                R.id.messageChatFragment -> {
+                    CoroutineScope(Dispatchers.Main).async {
+                        Constants.updateStatus("Online")
+                    }
+                }
+
+                R.id.viewFullImageFragment -> {
+                    CoroutineScope(Dispatchers.Main).async {
+                        Constants.updateStatus("Online")
+                    }
+                }
+
+                R.id.visitUserProfileFragment -> {
+                    CoroutineScope(Dispatchers.Main).async {
+                        Constants.updateStatus("Online")
+                    }
+                }
+            }
         }
     }
 }

@@ -53,11 +53,12 @@ class LoginViewModel : ViewModel() {
 
                                     val user = ds.getValue(UsersModel::class.java)!!
 
-                                    var bundle = Bundle()
+                                    val bundle = Bundle()
                                     bundle.putSerializable(Constants.SERIALIZABLE_USERS , user)
                                     try{
                                         Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_viewPagerFragment , bundle)
                                         Constants.hideProgressDialog()
+
                                     }catch(e:Exception){
 
                                     }

@@ -12,7 +12,7 @@ import com.google.firebase.database.*
 
 class SearchViewModel : ViewModel() {
 
-    var etSearchUser = MutableLiveData<String>("")
+    var etSearchUser            = MutableLiveData<String>("")
     var mUsersAdapterLiveData   = MutableLiveData<ArrayList<UsersModel>>()
     private var mUsers          = ArrayList<UsersModel>()
 
