@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.meetchat.R
 import com.example.meetchat.databinding.FragmentSplashBinding
+import kotlinx.coroutines.*
 
 class SplashFragment : Fragment() {
 
@@ -22,9 +23,10 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // handler splash fragment open to viewPager fragment
-        @Suppress("DEPRECATION")
-        Handler()
-        .postDelayed( { findNavController().navigate(R.id.action_splashFragment_to_loginFragment) }, 2000 )
+        //  delay open splash fragment to viewPager fragment.
+        CoroutineScope(Dispatchers.Main).launch{
+            delay(1500)
+            findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
+        }
     }
 }

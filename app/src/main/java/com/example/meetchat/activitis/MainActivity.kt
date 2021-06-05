@@ -19,19 +19,20 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding : ActivityMainBinding
+    lateinit var binding            : ActivityMainBinding
+    lateinit var navHostFragment    : NavHostFragment
+    lateinit var navController      : NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this , R.layout.activity_main)
 
         // operation work for navigation component for fragment
-        val navHostFragment : NavHostFragment   = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController   : NavController     = navHostFragment.navController
+        navHostFragment     = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController       = navHostFragment.navController
 
         // set up action bar for fragment
         val appBarConfiguration = AppBarConfiguration(setOf())
         setupActionBarWithNavController(navController , appBarConfiguration)
-
 
         //hide action bar for fragment
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -51,18 +52,11 @@ class MainActivity : AppCompatActivity() {
                 else -> supportActionBar!!.show()
             }
         }
-
-
-
-
     }
 
 
     override fun onPause() {
         super.onPause()
-        // operation work for navigation component for fragment
-        val navHostFragment : NavHostFragment   = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController   : NavController     = navHostFragment.navController
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
@@ -96,9 +90,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // operation work for navigation component for fragment
-        val navHostFragment : NavHostFragment   = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController   : NavController     = navHostFragment.navController
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id){

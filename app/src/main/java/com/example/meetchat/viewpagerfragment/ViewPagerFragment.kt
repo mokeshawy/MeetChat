@@ -85,7 +85,7 @@ class ViewPagerFragment : Fragment() {
                     }
                     true
                 }
-                R.id.action_delete_account ->{  // Delete account.
+                R.id.action_delete_account ->{
 
                 var alert = AlertDialog.Builder(requireActivity())
                 alert.setTitle("Are you sure delete your account?")
@@ -93,8 +93,9 @@ class ViewPagerFragment : Fragment() {
                 alert.setPositiveButton("yes"){dialog,which ->
                     val userReference = FirebaseDatabase.getInstance().getReference(Constants.USER_REFERENCE)
                     FirebaseAuth.getInstance().currentUser.delete()
-                        .addOnCompleteListener { task->
-                            if(task.isSuccessful){
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+
                             }
                         }
                     // when go delete account will delete all details for user.
